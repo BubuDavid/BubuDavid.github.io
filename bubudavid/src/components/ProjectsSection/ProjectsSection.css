@@ -1,0 +1,73 @@
+.ProjectsSection {
+	margin-top: 2rem;
+	position: relative;
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+	align-items: center;
+	transform: translate(-200px);
+	opacity: 0;
+}
+
+.ProjectsSection .Header {
+	margin-bottom: 1rem;
+	pointer-events: none;
+	color: white;
+}
+
+.ProjectsSection.isVisible {
+  animation: fade-in 1s ease forwards;
+}
+
+.ProjectCardContainer {
+	position: relative;
+	width: 80%;
+	height: calc(150px + 2rem);
+	margin-bottom: 3rem;
+	transform-origin: center center;
+}
+
+.ProjectCard {
+	position: absolute;
+	padding: 1rem;
+	display: flex;
+	background-color: #16271C;
+	color: white;
+	border-radius: 10px;
+	width: 100%;
+	cursor: pointer;
+	transition: all 300ms ease-in-out;
+	box-shadow: 0 0 10px #57E089;
+}
+
+.ProjectCard:hover {
+	box-shadow: 0 0 20px #57E089;
+	transform: scale(1.01);
+	border: 3px solid #57E089;
+}
+
+.ProjectCardImg {
+	width: 150px;
+	height: 150px;
+	margin-right: 1rem;
+}
+
+.TagContainer {
+	position: absolute;
+	font-size: 0.8rem;
+	bottom: 1rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+}
+
+.Tag {
+	border-radius: 10px;
+	margin-right: 1rem;
+	padding: 0.3rem;
+	font-weight: 600;
+	box-shadow: 0 0 8px #57E089;
+	border: 3px solid #57E089;
+	background-color: #16271C;
+	transition: all 300ms ease-in-out;
+}

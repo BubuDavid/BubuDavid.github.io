@@ -1,0 +1,18 @@
+.Header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+
+	margin-top: 1rem;
+
+	color: #bac4be;
+	transform: translateY(-200px);
+  opacity: 0;
+
+	animation: fade-in 1s ease 1 0.5s forwards;
+}
+
+.name {
+	color: white;
+}

@@ -1,0 +1,95 @@
+.Main {
+	margin-top: 3.2rem;	
+}
+
+.Logo {
+  margin-top: -50px;
+  height: 520px;
+  width: 520px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  user-select: none;
+}
+
+.Carousell {
+  height: 400px;
+  width: 400px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  cursor: pointer;
+	animation: showspin 30s linear 1s infinite;
+}
+
+
+@keyframes showspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.Icon {
+	position: absolute;
+	width: 90px;
+	height: 90px;
+	/* overflow: hidden; */
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 0.2s ease;
+	opacity: 0;
+	border: 3px solid #57E089;
+
+	z-index: 1;
+	transition: all 300ms ease;
+}
+
+.Icon.active {
+	opacity: 1;
+}
+
+.IconImg {
+	width: 105%;
+	height: 105%;
+	border-radius: 50%;
+	box-shadow: 0 0 5px #57E089;
+	border: 3px solid #57E089;
+	transition: all 300ms ease;
+}
+
+.IconImg:hover{
+	transform: scale(1.1);
+	box-shadow: 0 0 10px #57E089;
+}
+
+@keyframes appear {
+	to {
+		opacity: 1;
+	}
+}
+
+.MainPhoto{
+	position: absolute;
+  height: 300px;
+  width: 300px;
+  border-radius: 50%;
+	box-shadow: 0 0 5px #57E089;
+	border: 3px solid #57E089;
+  transform: translate(-200px);
+  opacity: 0;
+  animation: fade-in 1s ease 1 0.5s forwards;
+	z-index: 1000;
+}
+
+@keyframes fade-in {
+  to {
+    transform: translate(0,0);
+    opacity: 1;
+  }
+}
