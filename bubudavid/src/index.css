@@ -3,6 +3,9 @@
 * {
 	margin: 0;
 	padding: 0;
+	-moz-box-sizing: border-box; 
+	-webkit-box-sizing: border-box; 
+	 box-sizing: border-box; 
 }
 
 
@@ -12,18 +15,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-	background-color: #16271C;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+	monospace;
 }
 
 #root {
 	min-height: 100vh;
+	overflow-x: hidden;
+	background-color: #16271C;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 
 }

@@ -10,9 +10,14 @@ function MyProvider({ children }) {
 		projects
 	} = useCallAirtableAPI(0)
 	const getIconsPosition = (links) => {
+		const photo = document.querySelector('.MainPhoto')
+		const icon = document.querySelector('.Icon')
+		const photoWidth = photo.clientWidth
+		const iconWidth = icon.clientWidth
 		const nLinks = links.length
 		const angleSeparation = 360.0 / nLinks
-		const radius = 205
+		const radius = (photoWidth / 2 + iconWidth / 2) * (1.1)
+		console.log(radius)
 		let angles = []
 		let currentAngle = 270
 		for (let i = 0; i < nLinks; i++) {

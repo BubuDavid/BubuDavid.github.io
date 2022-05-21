@@ -3,9 +3,7 @@
 }
 
 .Logo {
-  margin-top: -50px;
-  height: 520px;
-  width: 520px;
+  margin-top: -70px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,4 +90,25 @@
     transform: translate(0,0);
     opacity: 1;
   }
+}
+
+@media only screen and (max-width: 500px) {
+	.Main {
+		margin-top: 0;
+	}
+	
+	.Carousell {
+		height: 300px;
+		width: 300px;
+	}
+
+	.MainPhoto {
+		height: 200px;
+		width: 200px;
+	}
+
+	.Icon {
+		height: 50px;
+		width: 50px;
+	}
 }
