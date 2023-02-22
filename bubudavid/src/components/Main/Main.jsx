@@ -19,11 +19,13 @@ export default function Main() {
 							className='Icon'
 							href={project.link}
 							target="_blank"
+							rel='noreferrer'
 							key={key}
 						>
 							<img
 								className='IconImg'
 								src={project.image ? project.image[0].url : process.env.PUBLIC_URL + "default.png"} 
+								alt={"Carousell Project"}
 							/>
 						</a>
 					})}

@@ -9,6 +9,7 @@ export default function ProjectCard({ project }) {
 				<img
 					className="ProjectCardImg"
 					src={project.image ? project.image[0].url : process.env.PUBLIC_URL + "default.png"}
+					alt={"Project Card"}
 					/>
 				<div
 					className="CardInfo"
