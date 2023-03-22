@@ -30,12 +30,16 @@
 	animation-iteration-count: 1;
 	animation-delay: 1.5s;
 	transition: all 300ms linear;
-
 }
 
 .SocialIcon:nth-child(1) {
-	margin-bottom: 0.5rem;
+	border-radius: 50% 50% 0 0;
 }
+
+.SocialIcon:nth-child(2) {
+	border-radius: 0 0 50% 50%;
+}
+
 
 .SocialIcon:hover {
 	background-color: white;
