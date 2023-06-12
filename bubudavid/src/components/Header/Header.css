@@ -1,0 +1,30 @@
+.Header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	text-align: center;
+
+	margin-top: 1rem;
+
+	color: #bac4be;
+	transform: translateY(-200px);
+  opacity: 0;
+
+	animation: fade-in 1s ease 1 0.5s forwards;
+}
+
+.name {
+	color: white;
+}
+
+@media only screen and (max-width: 500px) {
+	.Header {
+		margin-bottom: 0;
+		font-size: 0.8rem;
+	}
+
+	.name {
+		font-size: 1rem;
+	}
+}
