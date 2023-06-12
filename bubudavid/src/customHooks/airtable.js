@@ -9,11 +9,11 @@ export default function useCallAirtableAPI(initialValue) {
 		const fetchData = async () => {
 			setLoading(true)
 			try {
-				const url = process.env.REACT_APP_AIRTABLE_URL
+				const url = process.env.REACT_APP_AIRTABLE_URL + '?sort%5B0%5D%5Bfield%5D=id&sort%5B0%5D%5Bdirection%5D=desc'
 				const headers = {
 					"Content-type": "application/json",
 					'Accept': 'application/json',
-					"Authorization": `Bearer ${process.env.REACT_APP_AIRTABLE_KEY}`
+					"Authorization": `Bearer ${process.env.REACT_APP_AIRTABLE_TOKEN}`
 				}
 				const response = await fetch(url, {
 					headers: headers,
