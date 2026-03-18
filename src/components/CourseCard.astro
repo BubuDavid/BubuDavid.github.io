@@ -1,0 +1,31 @@
+---
+import TagPill from './TagPill.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  url: string;
+  platform?: string;
+  tags: string[];
+  image?: string;
+}
+
+const { title, description, url, platform, tags, image } = Astro.props;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="block bg-surface border border-surface-border rounded-2xl overflow-hidden hover:shadow-[0_4px_20px_rgba(61,44,30,0.1)] hover:-translate-y-1 transition-all duration-300"
+>
+  {image && <img src={image} alt={title} class="w-full h-40 object-cover" />}
+  <div class="p-6">
+    {platform && <span class="text-xs font-mono text-accent-secondary uppercase tracking-wide">{platform}</span>}
+    <h3 class="font-heading text-lg font-semibold mt-1 mb-2">{title}</h3>
+    <p class="text-text-muted text-sm mb-3">{description}</p>
+    <div class="flex flex-wrap gap-2">
+      {tags.map((tag) => <TagPill label={tag} />)}
+    </div>
+  </div>
+</a>

@@ -1,0 +1,77 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/Hero.astro';
+import SkillsSection from '../components/SkillsSection.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import BlogPostCard from '../components/BlogPostCard.astro';
+import FadeIn from '../components/FadeIn.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const recentPosts = allPosts
+  .sort((a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime())
+  .slice(0, 3);
+---
+
+<PageLayout title="Bubu — Home">
+  <Hero />
+
+  <SkillsSection />
+
+  <!-- Featured Projects -->
+  {featuredProjects.length > 0 && (
+    <section class="py-12">
+      <FadeIn>
+        <SectionHeading title="Featured Projects" subtitle="Some things I've built" />
+      </FadeIn>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featuredProjects.map((project, i) => (
+          <FadeIn delay={i * 100}>
+            <ProjectCard
+              title={project.data.title}
+              description={project.data.description}
+              tags={project.data.tags}
+              image={project.data.image}
+              liveUrl={project.data.liveUrl}
+              repoUrl={project.data.repoUrl}
+            />
+          </FadeIn>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- Recent Blog Posts -->
+  {recentPosts.length > 0 && (
+    <section class="py-12">
+      <FadeIn>
+        <SectionHeading title="Recent Posts" subtitle="Latest from the blog" />
+      </FadeIn>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {recentPosts.map((post, i) => (
+          <FadeIn delay={i * 100}>
+            <BlogPostCard
+              title={post.data.title}
+              description={post.data.description}
+              topic={post.data.topic}
+              slug={post.id}
+              publishedDate={post.data.publishedDate}
+              tags={post.data.tags}
+            />
+          </FadeIn>
+        ))}
+      </div>
+      <div class="mt-8 text-center">
+        <a href="/portfolio/blog" class="text-accent hover:underline font-medium">
+          View all posts →
+        </a>
+      </div>
+    </section>
+  )}
+</PageLayout>

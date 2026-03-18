@@ -1,0 +1,124 @@
+---
+const links = [
+  { href: '/portfolio/', label: 'Home' },
+  { href: '/portfolio/blog', label: 'Blog' },
+  { href: '/portfolio/projects', label: 'Projects' },
+  { href: '/portfolio/courses', label: 'Courses' },
+  { href: '/portfolio/notes', label: 'Notes' },
+  { href: '/portfolio/resources', label: 'Resources' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-surface-border">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/portfolio/" class="font-heading text-xl font-bold text-accent hover:text-accent-secondary transition-colors">
+        Bubu
+      </a>
+
+      <!-- Desktop links -->
+      <div class="hidden md:flex items-center gap-6">
+        {links.map(({ href, label }) => (
+          <a
+            href={href}
+            class:list={[
+              'text-sm font-medium transition-colors',
+              currentPath === href || (href !== '/portfolio/' && currentPath.startsWith(href))
+                ? 'text-accent'
+                : 'text-text-muted hover:text-text',
+            ]}
+          >
+            {label}
+          </a>
+        ))}
+        <!-- Theme toggle -->
+        <button
+          id="theme-toggle"
+          aria-label="Toggle theme"
+          class="p-2 rounded-full hover:bg-surface-border transition-colors text-text-muted hover:text-text"
+        >
+          <svg id="sun-icon" class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5" /><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg id="moon-icon" class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile: theme toggle + hamburger -->
+      <div class="flex items-center gap-2 md:hidden">
+        <button
+          id="theme-toggle-mobile"
+          aria-label="Toggle theme"
+          class="p-2 rounded-full hover:bg-surface-border transition-colors text-text-muted hover:text-text"
+        >
+          <svg class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5" /><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+        <button
+          id="mobile-menu-btn"
+          aria-label="Open menu"
+          class="p-2 rounded-lg hover:bg-surface-border transition-colors text-text-muted hover:text-text"
+        >
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path id="hamburger-lines" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden pb-4">
+      <div class="flex flex-col gap-2">
+        {links.map(({ href, label }) => (
+          <a
+            href={href}
+            class:list={[
+              'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+              currentPath === href || (href !== '/portfolio/' && currentPath.startsWith(href))
+                ? 'text-accent bg-surface'
+                : 'text-text-muted hover:text-text hover:bg-surface',
+            ]}
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  function setupNav() {
+    // Theme toggle
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+
+    document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+    document.getElementById('theme-toggle-mobile')?.addEventListener('click', toggleTheme);
+
+    // Mobile menu
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    menuBtn?.addEventListener('click', () => {
+      menu?.classList.toggle('hidden');
+    });
+  }
+
+  setupNav();
+  document.addEventListener('astro:after-swap', setupNav);
+</script>
+
+<script>
+  import '../scripts/games/dino-runner';
+</script>

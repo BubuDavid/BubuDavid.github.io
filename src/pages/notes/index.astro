@@ -1,0 +1,42 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import FadeIn from '../../components/FadeIn.astro';
+import { getCollection, render } from 'astro:content';
+
+const allNotes = await getCollection('notes');
+const notes = allNotes.sort(
+  (a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime()
+);
+
+// Render note bodies
+const notesWithBodies = await Promise.all(
+  notes.map(async (note) => {
+    const { Content } = await render(note);
+    return { note, Content };
+  })
+);
+---
+
+<PageLayout title="Notes — Bubu">
+  <SectionHeading title="Notes" subtitle="Random thoughts and observations" />
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {notesWithBodies.map(({ note, Content }, i) => (
+      <FadeIn delay={i * 80}>
+        <NoteCard
+          title={note.data.title}
+          publishedDate={note.data.publishedDate}
+          tags={note.data.tags}
+          mood={note.data.mood}
+          body=""
+        />
+      </FadeIn>
+    ))}
+  </div>
+
+  {notes.length === 0 && (
+    <p class="text-text-muted text-center py-12">No notes yet. Check back soon!</p>
+  )}
+</PageLayout>

@@ -1,0 +1,38 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import BlogTopicCard from '../../components/BlogTopicCard.astro';
+import FadeIn from '../../components/FadeIn.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+// Group posts by topic
+const topicMap = new Map<string, { label: string; count: number }>();
+for (const post of allPosts) {
+  const existing = topicMap.get(post.data.topic);
+  if (existing) {
+    existing.count++;
+  } else {
+    topicMap.set(post.data.topic, { label: post.data.topicLabel, count: 1 });
+  }
+}
+
+const topics = Array.from(topicMap.entries()).sort((a, b) => a[1].label.localeCompare(b[1].label));
+---
+
+<PageLayout title="Blog — Bubu">
+  <SectionHeading title="Blog" subtitle="Thoughts organized by topic" />
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {topics.map(([topic, { label, count }], i) => (
+      <FadeIn delay={i * 80}>
+        <BlogTopicCard topic={topic} label={label} postCount={count} />
+      </FadeIn>
+    ))}
+  </div>
+
+  {topics.length === 0 && (
+    <p class="text-text-muted text-center py-12">No posts yet. Check back soon!</p>
+  )}
+</PageLayout>

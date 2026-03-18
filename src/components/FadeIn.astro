@@ -1,0 +1,36 @@
+---
+interface Props {
+  class?: string;
+  delay?: number;
+}
+
+const { class: className = '', delay = 0 } = Astro.props;
+---
+
+<div
+  class:list={['fade-in-section opacity-0 translate-y-6 transition-all duration-700 ease-out', className]}
+  style={delay ? `transition-delay: ${delay}ms` : ''}
+>
+  <slot />
+</div>
+
+<script>
+  function setupFadeIn() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('opacity-0', 'translate-y-6');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.fade-in-section').forEach((el) => observer.observe(el));
+  }
+
+  setupFadeIn();
+  document.addEventListener('astro:after-swap', setupFadeIn);
+</script>

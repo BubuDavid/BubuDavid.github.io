@@ -1,0 +1,26 @@
+---
+import BlogPostLayout from '../../../layouts/BlogPostLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+  return allPosts.map((post) => {
+    // The glob loader sets id as "topic-slug/post-slug", extract the post slug part
+    const parts = post.id.split('/');
+    const postSlug = parts.length > 1 ? parts.slice(1).join('/') : post.id;
+
+    return {
+      params: { topic: post.data.topic, slug: postSlug },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogPostLayout frontmatter={post.data}>
+  <Content />
+</BlogPostLayout>

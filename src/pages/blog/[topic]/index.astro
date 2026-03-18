@@ -1,0 +1,52 @@
+---
+import PageLayout from '../../../layouts/PageLayout.astro';
+import SectionHeading from '../../../components/SectionHeading.astro';
+import BlogPostCard from '../../../components/BlogPostCard.astro';
+import FadeIn from '../../../components/FadeIn.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+  const topics = new Map<string, { label: string }>();
+  for (const post of allPosts) {
+    if (!topics.has(post.data.topic)) {
+      topics.set(post.data.topic, { label: post.data.topicLabel });
+    }
+  }
+
+  return Array.from(topics.entries()).map(([topic, { label }]) => ({
+    params: { topic },
+    props: { topicLabel: label },
+  }));
+}
+
+const { topic } = Astro.params;
+const { topicLabel } = Astro.props;
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft && data.topic === topic);
+const posts = allPosts.sort((a, b) => {
+  if (a.data.order !== undefined && b.data.order !== undefined) return a.data.order - b.data.order;
+  return new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime();
+});
+---
+
+<PageLayout title={`${topicLabel} — Blog — Bubu`}>
+  <a href="/portfolio/blog" class="text-sm text-accent hover:underline mb-4 inline-block">← All Topics</a>
+  <SectionHeading title={topicLabel} subtitle={`${posts.length} ${posts.length === 1 ? 'post' : 'posts'}`} />
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {posts.map((post, i) => (
+      <FadeIn delay={i * 80}>
+        <BlogPostCard
+          title={post.data.title}
+          description={post.data.description}
+          topic={post.data.topic}
+          slug={post.id}
+          publishedDate={post.data.publishedDate}
+          tags={post.data.tags}
+        />
+      </FadeIn>
+    ))}
+  </div>
+</PageLayout>

@@ -1,0 +1,24 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import TagPill from './TagPill.astro';
+import FadeIn from './FadeIn.astro';
+import { skills } from '../data/skills';
+---
+
+<section class="py-12">
+  <SectionHeading title="Skills & Tools" subtitle="Technologies I work with" />
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {skills.map((category, i) => (
+      <FadeIn delay={i * 100}>
+        <div class="bg-surface border border-surface-border rounded-2xl p-6 hover:shadow-[0_2px_15px_rgba(61,44,30,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+          <h3 class="font-heading text-lg font-semibold mb-3">{category.name}</h3>
+          <div class="flex flex-wrap gap-2">
+            {category.items.map((item) => (
+              <TagPill label={item} />
+            ))}
+          </div>
+        </div>
+      </FadeIn>
+    ))}
+  </div>
+</section>

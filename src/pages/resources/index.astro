@@ -1,0 +1,46 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import FadeIn from '../../components/FadeIn.astro';
+import { getCollection } from 'astro:content';
+
+const allResources = await getCollection('resources');
+
+// Group by category
+const categoryMap = new Map<string, typeof allResources>();
+for (const resource of allResources) {
+  const cat = resource.data.category;
+  if (!categoryMap.has(cat)) categoryMap.set(cat, []);
+  categoryMap.get(cat)!.push(resource);
+}
+
+const categories = Array.from(categoryMap.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<PageLayout title="Resources — Bubu">
+  <SectionHeading title="Resources" subtitle="Useful links, tools, and recommendations" />
+
+  {categories.map(([category, resources]) => (
+    <section class="mb-12">
+      <h3 class="font-heading text-xl font-semibold mb-4">{category}</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {resources.map((resource, i) => (
+          <FadeIn delay={i * 80}>
+            <ResourceCard
+              title={resource.data.title}
+              description={resource.data.description}
+              category={resource.data.category}
+              url={resource.data.url}
+              tags={resource.data.tags}
+            />
+          </FadeIn>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  {allResources.length === 0 && (
+    <p class="text-text-muted text-center py-12">No resources yet. Check back soon!</p>
+  )}
+</PageLayout>

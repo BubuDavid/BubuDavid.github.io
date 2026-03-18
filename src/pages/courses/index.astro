@@ -1,0 +1,33 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import CourseCard from '../../components/CourseCard.astro';
+import FadeIn from '../../components/FadeIn.astro';
+import { getCollection } from 'astro:content';
+
+const allCourses = await getCollection('courses');
+const courses = allCourses.sort((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout title="Courses — Bubu">
+  <SectionHeading title="Courses" subtitle="Free courses and learning material" />
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {courses.map((course, i) => (
+      <FadeIn delay={i * 100}>
+        <CourseCard
+          title={course.data.title}
+          description={course.data.description}
+          url={course.data.url}
+          platform={course.data.platform}
+          tags={course.data.tags}
+          image={course.data.image}
+        />
+      </FadeIn>
+    ))}
+  </div>
+
+  {courses.length === 0 && (
+    <p class="text-text-muted text-center py-12">No courses yet. Check back soon!</p>
+  )}
+</PageLayout>
