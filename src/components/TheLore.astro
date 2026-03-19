@@ -1,0 +1,216 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import TagPill from './TagPill.astro';
+import FadeIn from './FadeIn.astro';
+import { experience, education, extracurriculars, awards } from '../data/experience';
+import { skills } from '../data/skills';
+---
+
+<section class="py-12" id="the-lore">
+  <FadeIn>
+    <SectionHeading title="The Lore" subtitle="The backstory behind the character" />
+  </FadeIn>
+
+  <!-- Experience -->
+  <div class="mb-12">
+    <FadeIn>
+      <h3 class="font-heading text-2xl font-bold mb-6">Experience</h3>
+    </FadeIn>
+    <div class="space-y-4">
+      {experience.map((exp, i) => (
+        <FadeIn delay={i * 80}>
+          <div class="bg-surface border border-surface-border rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-[0_2px_15px_rgba(61,44,30,0.08)]">
+            <button
+              class="exp-toggle w-full text-left px-6 py-4 flex items-start sm:items-center justify-between gap-4 cursor-pointer"
+              aria-expanded="false"
+            >
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="font-heading text-lg font-semibold">{exp.title}</span>
+                  {exp.current && !exp.secondary && (
+                    <span class="text-xs font-medium bg-accent/15 text-accent px-2 py-0.5 rounded-full">current</span>
+                  )}
+                  {exp.secondary && (
+                    <span class="text-xs font-medium bg-success/15 text-success px-2 py-0.5 rounded-full">active</span>
+                  )}
+                </div>
+                <p class="text-text-muted text-sm">
+                  {exp.company} &middot; {exp.period}
+                </p>
+              </div>
+              <svg
+                class="exp-chevron w-5 h-5 text-text-muted shrink-0 transition-transform duration-200"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+              >
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="exp-content overflow-hidden transition-all duration-300 ease-in-out" style="height: 0; opacity: 0;">
+              <div class="px-6 pb-5">
+              <p class="text-text-muted mb-3 text-sm">{exp.description}</p>
+              <ul class="space-y-2">
+                {exp.bullets.map((bullet) => (
+                  <li class="text-sm text-text-muted flex gap-2">
+                    <span class="text-accent mt-1 shrink-0">&#8227;</span>
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+      ))}
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div class="mb-12">
+    <FadeIn>
+      <h3 class="font-heading text-2xl font-bold mb-6">Education</h3>
+    </FadeIn>
+    <FadeIn delay={80}>
+      <div class="bg-surface border border-surface-border rounded-2xl p-6">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
+          <span class="font-heading text-lg font-semibold">{education.degree}</span>
+          <span class="text-text-muted text-sm">{education.period}</span>
+        </div>
+        <p class="text-text-muted text-sm mb-3">{education.institution} &middot; {education.location}</p>
+        <ul class="space-y-1">
+          {education.highlights.map((h) => (
+            <li class="text-sm text-text-muted flex gap-2">
+              <span class="text-accent mt-0.5 shrink-0">&#8227;</span>
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </FadeIn>
+  </div>
+
+  <!-- Skills -->
+  <div class="mb-12">
+    <FadeIn>
+      <h3 class="font-heading text-2xl font-bold mb-6">Skills & Tools</h3>
+    </FadeIn>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {skills.map((category, i) => (
+        <FadeIn delay={i * 80}>
+          <div class="bg-surface border border-surface-border rounded-2xl p-5 hover:shadow-[0_2px_15px_rgba(61,44,30,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+            <h4 class="font-heading text-base font-semibold mb-3">{category.name}</h4>
+            <div class="flex flex-wrap gap-2">
+              {category.items.map((item) => (
+                <TagPill label={item} />
+              ))}
+            </div>
+          </div>
+        </FadeIn>
+      ))}
+    </div>
+  </div>
+
+  <!-- Extracurriculars -->
+  <div class="mb-12">
+    <FadeIn>
+      <h3 class="font-heading text-2xl font-bold mb-6">Extracurriculars</h3>
+    </FadeIn>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {extracurriculars.map((ext, i) => (
+        <FadeIn delay={i * 80}>
+          <a
+            href={ext.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block bg-surface border border-surface-border rounded-2xl p-5 hover:shadow-[0_2px_15px_rgba(61,44,30,0.08)] hover:-translate-y-0.5 transition-all duration-300 group"
+          >
+            <div class="flex items-center gap-2 mb-1">
+              <span class="font-heading text-base font-semibold group-hover:text-accent transition-colors">{ext.name}</span>
+              <svg class="w-3.5 h-3.5 text-text-muted opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7M17 7H7M17 7v10" />
+              </svg>
+            </div>
+            <p class="text-text-muted text-sm">{ext.role} &middot; {ext.period}</p>
+          </a>
+        </FadeIn>
+      ))}
+    </div>
+  </div>
+
+  <!-- Awards -->
+  <div>
+    <FadeIn>
+      <h3 class="font-heading text-2xl font-bold mb-6">Awards</h3>
+    </FadeIn>
+    <FadeIn delay={80}>
+      <div class="flex flex-wrap gap-3">
+        {awards.map((award) => (
+          <div class="bg-surface border border-surface-border rounded-xl px-4 py-2.5 text-sm">
+            <span class="font-medium">{award.title}</span>
+            <span class="text-text-muted"> — {award.event}</span>
+            <span class="text-text-muted text-xs ml-1">({award.date})</span>
+          </div>
+        ))}
+      </div>
+    </FadeIn>
+  </div>
+</section>
+
+<script>
+  function setupExpToggles() {
+    const toggles = document.querySelectorAll('.exp-toggle');
+
+    function closePanel(btn: Element) {
+      const content = btn.nextElementSibling as HTMLElement;
+      const chevron = btn.querySelector('.exp-chevron') as HTMLElement;
+      content.style.height = content.scrollHeight + 'px';
+      // Force reflow so the browser registers the start height
+      content.offsetHeight;
+      content.style.height = '0';
+      content.style.opacity = '0';
+      chevron.style.transform = 'rotate(0deg)';
+      btn.setAttribute('aria-expanded', 'false');
+    }
+
+    function openPanel(btn: Element) {
+      const content = btn.nextElementSibling as HTMLElement;
+      const chevron = btn.querySelector('.exp-chevron') as HTMLElement;
+      const inner = content.firstElementChild as HTMLElement;
+      const targetHeight = inner.offsetHeight;
+      content.style.height = targetHeight + 'px';
+      content.style.opacity = '1';
+      chevron.style.transform = 'rotate(180deg)';
+      btn.setAttribute('aria-expanded', 'true');
+
+      // After transition, set height to auto so it adapts if content changes
+      const onEnd = () => {
+        if (btn.getAttribute('aria-expanded') === 'true') {
+          content.style.height = 'auto';
+        }
+        content.removeEventListener('transitionend', onEnd);
+      };
+      content.addEventListener('transitionend', onEnd);
+    }
+
+    toggles.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+        // Close all other panels first
+        toggles.forEach((other) => {
+          if (other !== btn && other.getAttribute('aria-expanded') === 'true') {
+            closePanel(other);
+          }
+        });
+
+        if (isOpen) {
+          closePanel(btn);
+        } else {
+          openPanel(btn);
+        }
+      });
+    });
+  }
+
+  setupExpToggles();
+  document.addEventListener('astro:after-swap', setupExpToggles);
+</script>

@@ -71,6 +71,15 @@ body {
   --tw-prose-links: var(--color-accent);
 }
 
+/* ── Default cursor on text (but inherit inside interactive elements) ── */
+body, p, span, h1, h2, h3, h4, h5, h6, li, td, th, label, div {
+  cursor: default;
+}
+a *, button *, [role="button"] *,
+a, button, [role="button"] {
+  cursor: pointer;
+}
+
 /* ── Selection color ── */
 ::selection {
   background-color: var(--color-highlight);

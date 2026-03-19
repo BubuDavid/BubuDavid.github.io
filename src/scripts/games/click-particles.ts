@@ -1,4 +1,4 @@
-/** Click Particle Bursts — always-active subtle easter egg */
+/** Click Particle Bursts — toggled via sparkle button in nav */
 import { themeColors, resizeCanvasToWindow } from './utils';
 
 interface Particle {
@@ -16,6 +16,7 @@ let canvas: HTMLCanvasElement | null = null;
 let ctx: CanvasRenderingContext2D | null = null;
 let particles: Particle[] = [];
 let rafId = 0;
+let enabled = false;
 
 function ensureCanvas() {
   if (canvas && document.body.contains(canvas)) return;
@@ -51,7 +52,7 @@ function spawnBurst(x: number, y: number) {
       r: 2 + Math.random() * 3,
       color: palette[Math.floor(Math.random() * palette.length)],
       life: 0,
-      maxLife: 0.6 + Math.random() * 0.4, // 0.6-1.0s
+      maxLife: 0.6 + Math.random() * 0.4,
     });
   }
   if (!rafId) tick(performance.now());
@@ -93,11 +94,30 @@ function tick(now: number) {
 }
 
 function handleClick(e: MouseEvent) {
+  if (!enabled) return;
   ensureCanvas();
   spawnBurst(e.clientX, e.clientY);
 }
 
 let controller: AbortController | null = null;
+
+export function setParticlesEnabled(on: boolean) {
+  enabled = on;
+  if (!on) {
+    // Clean up canvas when disabled
+    particles = [];
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+    lastTime = 0;
+    document.getElementById('click-particles-canvas')?.remove();
+    canvas = null;
+    ctx = null;
+  }
+}
+
+export function getParticlesEnabled() {
+  return enabled;
+}
 
 export function setupClickParticles() {
   // Cleanup previous
@@ -106,6 +126,7 @@ export function setupClickParticles() {
   rafId = 0;
   lastTime = 0;
   particles = [];
+  enabled = false;
   document.getElementById('click-particles-canvas')?.remove();
   canvas = null;
   ctx = null;
@@ -115,6 +136,21 @@ export function setupClickParticles() {
 
   document.addEventListener('click', handleClick, { signal });
   window.addEventListener('resize', handleResize, { signal });
+
+  // Sparkle toggle button
+  const sparkleBtn = document.getElementById('sparkle-toggle');
+  if (sparkleBtn) {
+    sparkleBtn.classList.remove('text-accent', 'bg-surface-border');
+    sparkleBtn.addEventListener('click', () => {
+      enabled = !enabled;
+      if (enabled) {
+        sparkleBtn.classList.add('text-accent', 'bg-surface-border');
+      } else {
+        sparkleBtn.classList.remove('text-accent', 'bg-surface-border');
+        setParticlesEnabled(false);
+      }
+    }, { signal });
+  }
 }
 
 setupClickParticles();
