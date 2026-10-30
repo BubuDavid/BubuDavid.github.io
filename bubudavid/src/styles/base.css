@@ -80,11 +80,6 @@ button{font:inherit;color:inherit}
 .badge.sm{width:22px;height:22px;font-size:14px}
 .stripes{display:block;height:15px;background:linear-gradient(to bottom,var(--l1) 0 3px,transparent 3px 4px,var(--l2) 4px 7px,transparent 7px 8px,var(--l3) 8px 11px,transparent 11px 12px,var(--l4) 12px 15px)}
 
-/* ---------------- Sticky nav ---------------- */
-.topnav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(243,239,230,.95);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid var(--ink);transform:translateY(-110%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s}
-.topnav.is-on{transform:none;visibility:visible;transition:transform .25s ease,visibility 0s}
-.topnav::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:3px;background:linear-gradient(to right,var(--l1) 0 25%,var(--l2) 25% 50%,var(--l3) 50% 75%,var(--l4) 75%)}
-
 /* ---------------- Jump highlight ---------------- */
 @keyframes flash{0%,35%{background-color:rgba(87,224,137,.34)}100%{background-color:rgba(87,224,137,0)}}
 .toc > li.is-flash,.idx tr.is-flash,.case.is-flash .case-head{animation:flash 2.2s ease-out}
