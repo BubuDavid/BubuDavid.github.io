@@ -59,6 +59,7 @@
   .case--flip .feature .pull{grid-column:8 / 13}
   .case--wide .feature .pull{grid-column:1 / 5}
   .case--wide .feature .fig{grid-column:5 / 13}
+  .feature--solo .pull,.case--flip .feature--solo .pull,.case--wide .feature--solo .pull{grid-column:1 / 13} /* no figure */
   .case-notes{grid-column:4 / 13;grid-row:4}
 }
 

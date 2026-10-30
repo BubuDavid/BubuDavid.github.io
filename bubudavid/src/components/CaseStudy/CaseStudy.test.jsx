@@ -1,8 +1,19 @@
 import { render, screen } from '@testing-library/react';
-import { expect, test } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import CaseStudy from './CaseStudy';
 import RouteStrip from './RouteStrip';
 import { figureFor } from '../figures';
+
+/* A test can take one case's figure away, as when David deletes a figure. */
+const removed = vi.hoisted(() => ({ id: null }));
+vi.mock('../figures', async (importOriginal) => {
+  const real = await importOriginal();
+  return { ...real, figureFor: id => (id === removed.id ? null : real.figureFor(id)) };
+});
+
+afterEach(() => {
+  removed.id = null;
+});
 
 test('the route strip shows the line a case rode in on', () => {
   render(<RouteStrip caseId="lienzo" />);
@@ -35,4 +46,14 @@ test('a case study has its kicker, lineage, footnote and figure', () => {
 test('only the three case studies have figures', () => {
   expect(figureFor('pulso')).not.toBeNull();
   expect(figureFor('ruta')).toBeNull();
+});
+
+test('a case without a figure gives its big number the whole row', () => {
+  const { unmount } = render(<CaseStudy id="lienzo" />);
+  expect(document.querySelector('#lienzo .feature')).not.toHaveClass('feature--solo');
+  unmount();
+  removed.id = 'lienzo';
+  render(<CaseStudy id="lienzo" />);
+  expect(document.querySelector('#lienzo .fig')).toBeNull();
+  expect(document.querySelector('#lienzo .feature')).toHaveClass('feature--solo');
 });

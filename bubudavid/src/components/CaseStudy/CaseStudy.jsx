@@ -97,7 +97,7 @@ export default function CaseStudy({ id }) {
           </section>
         </div>
 
-        <div className="feature">
+        <div className={Figure ? 'feature' : 'feature feature--solo'}>
           <Pull pull={c.pull} mini={c.mini} />
           {Figure && <Figure />}
         </div>
