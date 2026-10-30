@@ -1,0 +1,24 @@
+/* ---------------- Contact links ---------------- */
+.mail-big{display:inline-block;margin-top:20px;font-family:var(--serif);font-style:italic;font-size:clamp(1.5rem,1.1rem + 1.4vw,2.25rem);line-height:1.1;letter-spacing:-.01em;overflow-wrap:anywhere}
+.social{margin-top:26px}
+.social a{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--hair);text-decoration:none;transition:color .15s}
+.social li:last-child a{border-bottom:1px solid var(--hair)}
+.social a:hover{color:var(--green)}
+.social .ico{width:1rem;height:1rem}
+.social .grow{flex:1}
+.social .label{min-width:0;overflow-wrap:anywhere;text-align:right;text-transform:none;letter-spacing:.02em;font-weight:500;font-size:.75rem}
+
+/* ---------------- Next stop (contact) ---------------- */
+.dest{padding-top:clamp(56px,8vw,120px)}
+.dest-grid{padding-top:26px;row-gap:36px}
+.dest-title{font-family:var(--serif);font-weight:360;font-size:clamp(2.75rem,1.4rem + 5vw,6rem);line-height:.95;letter-spacing:-.032em;margin:12px 0 22px;text-wrap:balance}
+.dest-title em{font-style:italic;color:var(--green)}
+.dest-main .standfirst{max-width:30ch}
+.dest-links > .label{padding-bottom:8px}
+.dest-links .social{margin-top:0}
+.dest-clock{margin-top:16px;color:var(--ink-3)}
+.dest-clock .js-clock{font:700 18px/1 var(--display);letter-spacing:.08em;color:var(--ink);margin-left:6px}
+@media (min-width:1024px){
+  .dest-main{grid-column:1 / 8}
+  .dest-links{grid-column:9 / 13;align-self:end}
+}
