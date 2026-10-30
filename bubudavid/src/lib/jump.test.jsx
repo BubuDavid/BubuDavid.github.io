@@ -77,3 +77,23 @@ test('a shared link to a plain section scrolls there on load', () => {
   render(<Hash />);
   expect(scrollIntoView.mock.contexts[0]).toBe(document.getElementById('experience'));
 });
+
+test('a shared link named after an Object.prototype property is not a station', () => {
+  history.replaceState(null, '', '/#constructor');
+  expect(() => render(<Hash />)).not.toThrow();
+  expect(scrollIntoView).not.toHaveBeenCalled();
+});
+
+test('an in-page link named after an Object.prototype property keeps the browser default', () => {
+  render(<Links />);
+  const link = document.body.appendChild(document.createElement('a'));
+  link.setAttribute('href', '#constructor');
+  const errors = []; // jsdom reports an exception in a listener as an error event on window
+  const onError = (event) => { event.preventDefault(); errors.push(event.error); };
+  window.addEventListener('error', onError);
+  const notCancelled = fireEvent.click(link);
+  window.removeEventListener('error', onError);
+  expect(errors).toEqual([]);
+  expect(notCancelled).toBe(true);
+  expect(scrollIntoView).not.toHaveBeenCalled();
+});

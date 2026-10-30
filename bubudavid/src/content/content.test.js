@@ -84,6 +84,7 @@ describe('network helpers', () => {
     expect(targetId('spotify')).toBe('a-04');
     expect(stationForTarget('a-04')).toBe('spotify');
     expect(stationForTarget('map')).toBeUndefined();
+    expect(['constructor', 'toString', '__proto__'].map(stationForTarget)).toEqual([undefined, undefined, undefined]);
   });
   test('names', () => {
     expect(displayName('dci')).toBe('DCI · Hacedor de Horarios');

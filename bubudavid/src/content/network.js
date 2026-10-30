@@ -14,9 +14,10 @@ export const routeName = id => STATIONS[id].rshort ?? displayName(id);
 /* The id of the element a station jumps to: its write-up (work) or its archive entry (lab). */
 export const targetId = id => (STATIONS[id].kind === 'work' ? id : `a-${STATIONS[id].no}`);
 
-const stationByTarget = Object.fromEntries(Object.keys(STATIONS).map(id => [targetId(id), id]));
+/* A Map, not an object: element ids come from the URL, and 'constructor' must not match. */
+const stationByTarget = new Map(Object.keys(STATIONS).map(id => [targetId(id), id]));
 
-export const stationForTarget = elementId => stationByTarget[elementId];
+export const stationForTarget = elementId => stationByTarget.get(elementId);
 
 export function linesText(lines) {
   if (lines.length === 1) return `Line ${lines[0]}`;
