@@ -2,10 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { LINE_IDS, LINES } from '../../content/lines';
 import { COLORS, TRAIN } from '../../content/map-layout';
 import { jumpTo } from '../../lib/jump';
+import { useIsMobile, usePrefersReducedMotion } from '../../lib/media';
 import LineBadge from '../shared/LineBadge';
 import PartHead from '../shared/PartHead';
 import HorizontalMap from './HorizontalMap';
 import MapTooltip from './MapTooltip';
+import VerticalMap from './VerticalMap';
+import { useTrain } from './useTrain';
 import './NetworkMap.css';
 
 function MapKey() {
@@ -53,6 +56,10 @@ export default function NetworkMap() {
   const [overflowing, setOverflowing] = useState(false);
   const cardRef = useRef(null);
   const scrollRef = useRef(null);
+  const isMobile = useIsMobile();
+  const reducedMotion = usePrefersReducedMotion();
+
+  useTrain(cardRef, { isMobile, reducedMotion });
 
   const active = hovered ?? pinned;
   const isDim = lines => active != null && !lines.includes(active);
@@ -66,15 +73,24 @@ export default function NetworkMap() {
     jumpTo(id);
   };
 
-  /* The sideways-scroll hint shows only while the map is wider than its frame. */
+  /* Crossing to the phone layout leaves no station for the tooltip to name. */
+  useEffect(() => {
+    if (isMobile) setTip(null);
+  }, [isMobile]);
+
+  /* The sideways-scroll hint shows only while the horizontal map is wider than its frame. */
   useEffect(() => {
     const scroll = scrollRef.current;
+    if (!scroll) {
+      setOverflowing(false);
+      return undefined;
+    }
     const check = () => setOverflowing(scroll.scrollWidth > scroll.clientWidth + 2);
     check();
     const observer = new ResizeObserver(check);
     observer.observe(scroll);
     return () => observer.disconnect();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section className="part net wrap" id="map" aria-labelledby="map-h">
@@ -116,11 +132,15 @@ export default function NetworkMap() {
           Scroll the map sideways
         </div>
 
-        <div className="hmap-wrap">
-          <div className="map-scroll" id="map-scroll" ref={scrollRef} onScroll={() => setTip(null)}>
-            <HorizontalMap isDim={isDim} onActivate={onActivate} onTip={onTip} />
+        {isMobile ? (
+          <VerticalMap isDim={isDim} onActivate={onActivate} />
+        ) : (
+          <div className="hmap-wrap">
+            <div className="map-scroll" id="map-scroll" ref={scrollRef} onScroll={() => setTip(null)}>
+              <HorizontalMap isDim={isDim} onActivate={onActivate} onTip={onTip} />
+            </div>
           </div>
-        </div>
+        )}
 
         <MapKey />
         <MapTooltip id={tip?.id} anchor={tip?.el} cardRef={cardRef} />

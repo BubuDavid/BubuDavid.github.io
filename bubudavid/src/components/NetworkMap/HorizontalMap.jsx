@@ -119,7 +119,8 @@ function Interchange(handlers) {
   );
 }
 
-function EndBadge({ n, x, y, r = 14, className }) {
+/* A line's number in its colour: at the ends of the lines here, at the top of each column in the vertical map. */
+export function EndBadge({ n, x, y, r = 14, className }) {
   return (
     <g data-lines={n} className={className}>
       <circle cx={x} cy={y} r={r} fill={LINES[n].color} stroke="#fff" strokeWidth="3" />
