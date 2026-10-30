@@ -31,4 +31,4 @@
   .toc-lines{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:calc(var(--gap) * 2)}
 }
 
-.toc-off{font:700 11px/1.5 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--l1)}
+.toc-off{font:700 11px/1.5 var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--l1-text)}

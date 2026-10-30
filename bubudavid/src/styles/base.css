@@ -67,6 +67,7 @@ b,strong{font-weight:600}
 
 :root{
   --l1:#D6286F; --l1-ink:#FFFFFF;
+  --l1-text:#A8174F; /* Line 1 pink darkened for small text on paper (AA 4.5:1) */
   --l2:#57E089; --l2-ink:#0B2A17;
   --l3:#1565D8; --l3-ink:#FFFFFF;
   --l4:#F28A1D; --l4-ink:#1D1206;
