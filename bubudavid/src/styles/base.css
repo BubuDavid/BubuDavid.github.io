@@ -87,4 +87,6 @@ button{font:inherit;color:inherit}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  /* No fade: the highlight holds still until the jump's timer takes the class off. */
+  .toc > li.is-flash,.idx tr.is-flash,.case.is-flash .case-head{background-color:rgba(87,224,137,.34)}
 }
