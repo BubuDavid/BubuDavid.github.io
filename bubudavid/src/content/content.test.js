@@ -1,50 +1,18 @@
 import { describe, expect, test } from 'vitest';
-import { LINE_IDS } from './lines';
 import { LAB } from './lab';
-import { ALSO, CASES, LAB_LINES, ROUTES, WORK } from './work';
-import { HPOS, TERMINI, VORDER, VX, XFER } from './map-layout';
+import { ALSO, CASES, WORK } from './work';
 import {
   STATIONS, archiveLine, displayName, grewInto, linesText, routeName,
   shortLine, stationForTarget, stationLabel, targetId,
 } from './network';
 
-const ids = Object.keys(STATIONS);
-
-describe('the network matches the hand-drawn map', () => {
+// The checks of map-layout.js against the network live in map.test.js; these ones pin today's content.
+describe('content', () => {
   test('there are 8 lab and 6 work stations', () => {
+    const ids = Object.keys(STATIONS);
     expect(ids.filter(id => STATIONS[id].kind === 'lab')).toHaveLength(8);
     expect(ids.filter(id => STATIONS[id].kind === 'work')).toHaveLength(6);
   });
-  test.each(LINE_IDS)('every stop on line %i exists and lists that line', n => {
-    for (const id of ROUTES[n]) {
-      expect(STATIONS[id], `ROUTES[${n}] names unknown station "${id}"`).toBeDefined();
-      expect(STATIONS[id].lines, `${id} is on ROUTES[${n}] but not on line ${n}`).toContain(n);
-    }
-  });
-  test.each(ids)('%s is on the route of each of its lines', id => {
-    for (const n of STATIONS[id].lines) expect(ROUTES[n], `add "${id}" to ROUTES[${n}]`).toContain(id);
-  });
-  test('every lab project has a line', () => {
-    for (const p of LAB) expect(LAB_LINES[p.id], `LAB_LINES has no line for "${p.id}"`).toBeDefined();
-  });
-  test('the only interchange is the one drawn by hand', () => {
-    expect(ids.filter(id => STATIONS[id].lines.length > 1)).toEqual([XFER.id]);
-  });
-  test.each(ids.filter(id => id !== XFER.id))('%s has coordinates', id => {
-    expect(HPOS[id], `add "${id}" to HPOS in map-layout.js`).toBeDefined();
-  });
-  test('the vertical map lists every station once, plus its three markers', () => {
-    expect([...VORDER].sort()).toEqual([...ids, '@lab', '@grad', '@work'].sort());
-  });
-  test('every line has a column on the vertical map and a badge on the horizontal one', () => {
-    for (const n of LINE_IDS) {
-      expect(VX[n], `VX has no column for line ${n}`).toBeTypeOf('number');
-      expect(TERMINI.some(([line]) => line === n), `TERMINI has no badge for line ${n}`).toBe(true);
-    }
-  });
-});
-
-describe('content', () => {
   test('lab numbers run from 01 to 08', () => {
     expect(LAB.map(p => p.no).sort()).toEqual(['01', '02', '03', '04', '05', '06', '07', '08']);
   });
