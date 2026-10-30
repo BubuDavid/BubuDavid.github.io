@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+# Perfil de David (bubudavid.github.io)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Mi página de perfil. Es una página de React con Vite que cuenta mi trabajo como un mapa de metro dentro de una revista. Vive en GitHub Pages: `npm run deploy` publica la carpeta `build/` en la rama `gh-pages` y GitHub la sirve en https://bubudavid.github.io.
 
-## Available Scripts
+El prototipo que sirvió de modelo está en `mockups/07-metro-editorial.html`, en la raíz del repositorio.
 
-In the project directory, you can run:
+## Comandos
 
-### `npm start`
+Corre todo desde esta carpeta (`bubudavid/`).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| Comando | Qué hace |
+|---|---|
+| `npm start` | Servidor de desarrollo en http://localhost:3000. |
+| `npm test` | Corre todas las pruebas una vez. |
+| `npm run build` | Compila la página en `build/`. |
+| `npm run preview` | Sirve `build/` tal como se publicaría. Corre `npm run build` antes. |
+| `npm run deploy` | Compila y publica en la rama `gh-pages`. |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`npm run deploy` se detiene mientras quede en el código alguna línea que empiece con `// RELLENO` o `// REVISAR`. Antes de compilar, `scripts/check-placeholders.mjs` imprime los archivos que todavía la tienen y sale con error. Para ver la lista sin desplegar, corre `node scripts/check-placeholders.mjs`.
 
-### `npm test`
+## Qué archivo guarda qué
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Todo el contenido está en `src/content/`.
 
-### `npm run build`
+- `lab.js` tiene los 8 proyectos reales de la escuela. Es contenido real.
+- `profile.js` tiene tu nombre, el titular, la presentación, la biografía, las habilidades, los enlaces y la foto. Es un borrador escrito a partir de tu trabajo real y empieza con `// REVISAR:`.
+- `work.js` tiene la empresa, el correo, las cifras, los proyectos de trabajo, la línea y la ruta de cada proyecto (`LAB_LINES` y `ROUTES`), los casos de estudio, las notas breves y la cronología. Todo es inventado y empieza con `// RELLENO:`.
+- `lines.js` tiene el nombre y el color de las cuatro líneas del metro.
+- `map-layout.js` tiene las coordenadas del mapa, escritas a mano.
+- `network.js` no se edita. Deriva de `lab.js` y `work.js` los datos que usan los componentes.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Las tres figuras de los casos de estudio están en `src/components/figures/` (`PulsoFigure.jsx`, `LienzoFigure.jsx` y `GlosaFigure.jsx`). También son inventadas y cada una empieza con `// RELLENO:`.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Antes de publicar
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Reemplaza `src/content/work.js` y las tres figuras de `src/components/figures/` por contenido real. Después borra la línea `// RELLENO` de cada archivo.
+2. Revisa `src/content/profile.js` y borra su línea `// REVISAR`.
+3. Cambia el correo. `hola@bubudavid.me` es de relleno (está en `EMAIL`, dentro de `work.js`) y el dominio `bubudavid.me` no responde hoy. Usa un correo que sí funcione.
+4. Revoca en Airtable el token de la versión anterior. Estuvo a la vista en el código publicado del sitio y sigue en el historial de git, así que borrarlo de los archivos no basta. La página nueva no usa ningún token ni variable de entorno.
+5. Corre `npm test`, `npm run build` y `node scripts/check-placeholders.mjs`. Cuando el último ya no imprima nada, `npm run deploy` va a funcionar.
 
-### `npm run eject`
+## Si cambias proyectos o líneas
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+El mapa se dibuja con coordenadas puestas a mano, así que un proyecto nuevo o una línea distinta no aparece solo en el lugar correcto. Cuando cambies un proyecto o su línea en `work.js` o `lab.js`, mueve también sus coordenadas en `map-layout.js`, tanto las del mapa horizontal (`HPOS`, `HPATHS`) como el orden del mapa vertical (`VORDER`).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Si algo no coincide, `npm test` falla y nombra lo que falta. Los mensajes se ven así, con el identificador de la estación en cuestión.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+add "nuevo" to HPOS in map-layout.js
+add "nuevo" to ROUTES[2]
+nuevo is on ROUTES[3] but not on line 3
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Dominio
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+El archivo `CNAME` de la raíz del repositorio apunta a `bubudavid.me`. Ese dominio no responde hoy y este rediseño no lo toca.
