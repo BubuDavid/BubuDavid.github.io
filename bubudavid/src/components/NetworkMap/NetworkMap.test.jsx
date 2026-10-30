@@ -115,6 +115,12 @@ test('the sideways-scroll hint shows only while the map is wider than its frame'
   expect(card).not.toHaveClass('is-overflowing');
 });
 
+test('the HOY label is in the darker Line 1 pink made for small text', () => {
+  render(<NetworkMap />);
+  const hoy = [...document.querySelectorAll('#hmap text')].find(text => text.textContent === 'HOY');
+  expect(hoy.style.fill).toBe('var(--l1-text)');
+});
+
 test('marks where the train runs: its path, its dot and the interchange it stops at', () => {
   render(<NetworkMap />);
   expect(document.querySelector('#hmap [data-train-path]')).toHaveAttribute('d');

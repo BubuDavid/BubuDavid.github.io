@@ -2,6 +2,7 @@
 .toc{margin-top:clamp(22px,3vw,40px);border-top:1px solid var(--ink)}
 .toc > li{display:grid;grid-template-columns:2.25rem minmax(0,1fr);column-gap:10px;padding:18px 0 20px;border-bottom:1px solid var(--hair);scroll-margin-top:30vh}
 .toc > li:target{background:var(--tint)}
+.toc > li:target .toc-meta{color:var(--ink-2)} /* ink-3 is 4.2:1 on the tint */
 .toc-n{font-family:var(--serif);font-size:1rem;color:var(--green);font-variant-numeric:tabular-nums lining-nums;padding-top:.4em}
 .toc-line{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--ink)}
 .toc-title{font-family:var(--serif);font-weight:400;font-size:clamp(1.3rem,1.05rem + .9vw,1.875rem);line-height:1.15;letter-spacing:-.015em;min-width:0;transition:color .15s}

@@ -173,7 +173,7 @@ export default function HorizontalMap({ isDim, onActivate, onTip }) {
         <path d={`M${GRAD_X} 33l7 7-7 7-7-7z`} fill={COLORS.ink} />
         <text className="axis-g" x={GRAD_X} y="25" textAnchor="middle">GRADUATION</text>
         <path d="M1243 47l-7-11h14z" fill={hoy} />
-        <text className="axis-g" x="1243" y="25" textAnchor="middle" style={{ fill: hoy }}>HOY</text>
+        <text className="axis-g" x="1243" y="25" textAnchor="middle" style={{ fill: 'var(--l1-text)' }}>HOY</text>
 
         <rect x="24" y="64" width="44" height="22" rx="5" fill={COLORS.ink} />
         <text className="zone-tag" x="46" y="79" textAnchor="middle">LAB</text>
