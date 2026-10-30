@@ -1,0 +1,33 @@
+/* ---------------- Also in this issue ---------------- */
+.idx{width:100%;border-collapse:collapse;margin-top:clamp(22px,3vw,40px)}
+.idx-n{font-family:var(--serif);color:var(--green);font-variant-numeric:tabular-nums lining-nums}
+.idx-name{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,1.3rem + 1.6vw,2.75rem);line-height:1;letter-spacing:-.025em}
+.idx-line{margin-top:8px;font-size:1rem;line-height:1.45}
+.idx-grew{margin-top:8px;font-size:.8125rem;color:var(--ink-3)}
+.idx-role,.idx-year{font-size:.9375rem;color:var(--ink-2)}
+.idx-year{font-variant-numeric:tabular-nums lining-nums}
+.idx-big{display:block;font-family:var(--serif);font-weight:330;font-size:clamp(2.6rem,1.7rem + 2.4vw,3.75rem);line-height:.95;letter-spacing:-.035em;font-variant-numeric:lining-nums}
+.idx-what{display:block;margin-top:6px;font-size:.9375rem;line-height:1.4}
+.idx-more{display:block;margin-top:6px;font-size:.8125rem;line-height:1.45;color:var(--ink-3)}
+@media (min-width:720px){
+  .idx th{text-align:left;font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);padding:0 18px 10px 0;border-bottom:1px solid var(--ink)}
+  .idx td{padding:24px 22px 26px 0;border-bottom:1px solid var(--hair);vertical-align:top}
+  .idx tr:last-child td{border-bottom-color:var(--ink)}
+  .idx td.idx-n{padding-top:32px}
+  .idx td.idx-role,.idx td.idx-year{padding-top:34px}
+}
+@media (max-width:719.98px){
+  .idx thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .idx,.idx tbody,.idx tr,.idx td{display:block}
+  .idx tr{display:grid;grid-template-columns:2.25rem minmax(0,1fr);column-gap:8px;padding:22px 0 24px;border-bottom:1px solid var(--hair)}
+  .idx tr:last-child{border-bottom-color:var(--ink)}
+  .idx td{padding:0}
+  .idx td.idx-n{grid-row:1 / span 4;padding-top:.55em}
+  .idx-p,.idx-role,.idx-year,.idx-res{grid-column:2}
+  .idx-role{margin-top:14px}
+  .idx-role::before,.idx-year::before{content:attr(data-label);display:inline-block;min-width:3.5rem;font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .idx td.idx-res{margin-top:14px;padding-top:12px;border-top:1px solid var(--hair)}
+}
+
+/* ---------------- Also on the network ---------------- */
+.idx-name .badge{width:24px;height:24px;font-size:15px;vertical-align:.35em;margin-left:10px}

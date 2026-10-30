@@ -1,3 +1,5 @@
+import AlsoIndex from './components/AlsoIndex/AlsoIndex';
+import Archive from './components/Archive/Archive';
 import SelectedWork from './components/CaseStudy/SelectedWork';
 import Cover from './components/Cover/Cover';
 import Masthead from './components/Masthead/Masthead';
@@ -16,6 +18,8 @@ export default function App() {
         <Cover />
         <NetworkMap />
         <SelectedWork />
+        <AlsoIndex />
+        <Archive />
       </main>
     </>
   );
