@@ -42,7 +42,7 @@ export default function Timetable() {
               {TIMELINE.map(({ lines, period, role, roleNote, desc, operator, status }) => (
                 <tr key={`${period} ${role}`}>
                   <td className="c-lines">
-                    <span className="t-lines" aria-label={linesText(lines)}>
+                    <span className="t-lines" role="img" aria-label={linesText(lines)}>
                       {lines.map(n => <LineBadge key={n} n={n} />)}
                     </span>
                   </td>

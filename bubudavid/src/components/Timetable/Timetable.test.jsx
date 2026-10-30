@@ -12,3 +12,10 @@ test('the departures board lists every service with the time in Mexico City', ()
   expect(within(rows[0]).getByText('Ceiba Data')).toBeInTheDocument();
   expect(screen.getByLabelText('Current time in Mexico City')).toHaveTextContent('12:05');
 });
+
+test('each service names the lines it runs on', () => {
+  render(<Timetable />);
+  const rows = within(screen.getByRole('table', { name: 'Experience timeline' })).getAllByRole('row').slice(1);
+  expect(within(rows[0]).getByRole('img', { name: 'Lines 1, 2, 3 and 4' })).toBeInTheDocument();
+  expect(within(rows[1]).getByRole('img', { name: 'Line 1' })).toBeInTheDocument();
+});
