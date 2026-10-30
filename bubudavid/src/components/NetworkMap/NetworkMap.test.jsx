@@ -1,10 +1,11 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import NetworkMap from './NetworkMap';
 import { resizeObserved, scrollIntoView } from '../../test/browser';
 
 const station = id => document.querySelector(`#hmap .stn[data-id="${id}"]`);
+const rect = (left, top, width, height) => ({ left, top, width, height, x: left, y: top, right: left + width, bottom: top + height });
 
 test('draws all fourteen stations as buttons with spoken labels', () => {
   render(<NetworkMap />);
@@ -84,6 +85,18 @@ test('hovering a station shows its tooltip, and scrolling the map hides it', asy
   await user.hover(station('socorro'));
   fireEvent.scroll(document.getElementById('map-scroll'));
   expect(screen.queryByRole('tooltip')).toBeNull();
+});
+
+test('a tooltip opened by focus stays when the map scrolls, and follows its station', () => {
+  render(<NetworkMap />);
+  vi.spyOn(document.getElementById('map-card'), 'getBoundingClientRect').mockReturnValue(rect(0, 0, 1000, 700));
+  const at = vi.spyOn(station('lienzo'), 'getBoundingClientRect').mockReturnValue(rect(700, 300, 40, 40));
+  act(() => station('lienzo').focus()); // at 761 to ~950 px, focus itself scrolls the map to the station
+  expect(screen.getByRole('tooltip').style.transform).toBe('translate(720px, 290px)');
+  at.mockReturnValue(rect(300, 300, 40, 40));
+  fireEvent.scroll(document.getElementById('map-scroll'));
+  expect(screen.getByRole('tooltip')).toHaveTextContent('Lienzo');
+  expect(screen.getByRole('tooltip').style.transform).toBe('translate(320px, 290px)');
 });
 
 test('the sideways-scroll hint shows only while the map is wider than its frame', () => {

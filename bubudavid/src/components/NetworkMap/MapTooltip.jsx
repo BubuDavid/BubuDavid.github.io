@@ -5,9 +5,12 @@ const GAP = 10;
 const EDGE = 8;
 const NAV = 64; // height of the sticky nav: a tooltip above the station must not slide under it
 
-/* The card that names a station on hover or focus. `anchor` is the station's element and `cardRef`
-   the map card it floats in; the position is measured once the content is in. */
-export default function MapTooltip({ id, anchor, cardRef }) {
+/* The card that names a station on hover or focus. `tip` is { id, el }: the station and its element, or
+   null. `cardRef` is the map card it floats in. The position is measured once the content is in, and again
+   each time `tip` is a new object, as when the map scrolls under a focused station. */
+export default function MapTooltip({ tip: shown, cardRef }) {
+  const id = shown?.id;
+  const anchor = shown?.el;
   const tipRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -21,7 +24,7 @@ export default function MapTooltip({ id, anchor, cardRef }) {
     let y = r.top - c.top - tip.offsetHeight - GAP;
     if (r.top - tip.offsetHeight - GAP < NAV) y = r.bottom - c.top + GAP;
     tip.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
-  }, [id, anchor, cardRef]);
+  }, [shown, id, anchor, cardRef]);
 
   const s = id ? STATIONS[id] : null;
   return (

@@ -68,6 +68,12 @@ export default function NetworkMap() {
     if (!id) return null;
     return prev?.id === id ? prev : { id, el };
   });
+  /* Scrolling moves the stations out from under a hover tooltip, so it closes. A tooltip opened by focus stays
+     and is measured again: focusing an off-screen station scrolls the map by itself. */
+  const onMapScroll = () => {
+    const focused = document.activeElement;
+    setTip(prev => (prev && prev.el === focused ? { ...prev } : null));
+  };
   const onActivate = (id) => {
     setTip(null);
     jumpTo(id);
@@ -136,14 +142,14 @@ export default function NetworkMap() {
           <VerticalMap isDim={isDim} onActivate={onActivate} />
         ) : (
           <div className="hmap-wrap">
-            <div className="map-scroll" id="map-scroll" ref={scrollRef} onScroll={() => setTip(null)}>
+            <div className="map-scroll" id="map-scroll" ref={scrollRef} onScroll={onMapScroll}>
               <HorizontalMap isDim={isDim} onActivate={onActivate} onTip={onTip} />
             </div>
           </div>
         )}
 
         <MapKey />
-        <MapTooltip id={tip?.id} anchor={tip?.el} cardRef={cardRef} />
+        <MapTooltip tip={tip} cardRef={cardRef} />
       </div>
     </section>
   );
