@@ -111,8 +111,8 @@ El prototipo tiene dos capas: Editorial (líneas 13–423) y las adiciones de Me
 
 | Archivo | Líneas del prototipo |
 |---|---|
-| `styles/base.css` | 16–68, 145–157, 433–447, 648–650, 665–667 |
-| `TopNav.css` | 448–456 |
+| `styles/base.css` | 16–68, 145–157, 429–442, 648–650, 665–667 |
+| `TopNav.css` | 444–455 |
 | `Masthead.css` | 70–96, 457–462 |
 | `Cover.css` | 97–144, 463–467 |
 | `NetworkMap.css` | 469–537, más las reglas de mapa y `.net-tip` de 652–664 |
