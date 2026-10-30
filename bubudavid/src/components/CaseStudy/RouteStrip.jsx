@@ -34,7 +34,7 @@ export default function RouteStrip({ caseId }) {
                 type="button"
                 className={`r-stop ${stop.kind}${interchange ? ' xfer' : ''}`}
                 aria-current={here ? 'location' : undefined}
-                aria-label={`${stop.name.replace(' 🐝', '')}${here ? ', this case study' : ', go to it'}`}
+                aria-label={`${routeName(id)}${here ? ', this case study' : ', go to it'}`}
                 onClick={() => jumpTo(id)}
               >
                 <span className="r-dot" />

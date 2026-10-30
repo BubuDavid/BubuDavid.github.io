@@ -3,6 +3,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import CaseStudy from './CaseStudy';
 import RouteStrip from './RouteStrip';
 import { figureFor } from '../figures';
+import { CASES } from '../../content/work';
 
 /* A test can take one case's figure away, as when David deletes a figure. */
 const removed = vi.hoisted(() => ({ id: null }));
@@ -25,6 +26,18 @@ test('the route strip shows the line a case rode in on', () => {
   const items = screen.getAllByRole('listitem');
   expect(items[0]).toHaveClass('seg-lab');
   expect(items[1]).toHaveClass('seg-grad');
+});
+
+test('each stop on a route strip is named by the words it shows', () => {
+  for (const { id } of CASES) {
+    const { unmount } = render(<RouteStrip caseId={id} />);
+    for (const stop of screen.getAllByRole('button')) {
+      const shown = stop.querySelector('.r-name').firstChild.textContent;
+      const here = stop.getAttribute('aria-current') === 'location';
+      expect(stop).toHaveAccessibleName(`${shown}${here ? ', this case study' : ', go to it'}`);
+    }
+    unmount();
+  }
 });
 
 test('the Pulso strip names the other lines that stop there', () => {
