@@ -13,6 +13,11 @@ const COLUMNS = [
   ['Result', '32%'],
 ];
 
+const WORDS = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+
+/* "Three more systems": the number in words up to nine, in digits after. */
+export const moreSystems = n => `${WORDS[n - 1] ?? n} more ${n === 1 ? 'system' : 'systems'}`;
+
 /* "Grew from A", "Grew from A and B": each name links to its entry in the archive. */
 function GrewFrom({ grew }) {
   return (
@@ -36,7 +41,7 @@ export default function AlsoIndex() {
       </PartHead>
 
       <table className="idx" role="table">
-        <caption className="sr-only">Three more systems: name, summary, role, year and headline result</caption>
+        <caption className="sr-only">{`${moreSystems(ALSO.length)}: name, summary, role, year and headline result`}</caption>
         <thead role="rowgroup">
           <tr role="row">
             {COLUMNS.map(([title, width]) => (

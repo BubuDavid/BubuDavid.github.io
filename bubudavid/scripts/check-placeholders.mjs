@@ -1,6 +1,6 @@
 // Stops `npm run deploy` while invented or unreviewed content is still in the repo.
 // A file is flagged when one of its lines starts with `// RELLENO` or `// REVISAR`.
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, realpathSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -41,4 +41,5 @@ function main() {
   process.exitCode = 1;
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) main();
+// Run directly, not imported by the tests. Node resolves symlinks in import.meta.url, so argv[1] must be resolved too.
+if (process.argv[1] && fileURLToPath(import.meta.url) === realpathSync(process.argv[1])) main();
