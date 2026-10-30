@@ -1,3 +1,4 @@
+import SelectedWork from './components/CaseStudy/SelectedWork';
 import Cover from './components/Cover/Cover';
 import Masthead from './components/Masthead/Masthead';
 import NetworkMap from './components/NetworkMap/NetworkMap';
@@ -14,6 +15,7 @@ export default function App() {
       <main>
         <Cover />
         <NetworkMap />
+        <SelectedWork />
       </main>
     </>
   );
