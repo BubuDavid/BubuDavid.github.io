@@ -4,7 +4,8 @@ import { prefersReducedMotion } from './media';
 
 const FLASH_MS = 2300;
 const CENTRED = '.toc > li, .idx tr'; // archive rows sit mid-screen; write-ups start at the top
-const HEADING = '.case-title, .idx-name, .toc-title';
+const HEADING = '.case-title, .idx-name'; // not focusable on their own: a jump gives them tabindex -1
+const FOCUS = `${HEADING}, .toc-line`; // where focus lands: the heading, or an archive row's own link
 
 const flashTimers = new WeakMap();
 
@@ -29,16 +30,17 @@ function scrollToTarget(el, instant) {
   }
 }
 
-/* Scroll to a station's section, flash it and move focus to its heading. False if it is not on the page. */
+/* Scroll to a station's section, flash it and move focus to its heading, or to the link of an archive row.
+   False if it is not on the page. */
 export function jumpTo(stationId, { instant = false } = {}) {
   const el = document.getElementById(targetId(stationId));
   if (!el) return false;
   scrollToTarget(el, instant || prefersReducedMotion());
   flash(el);
-  const heading = el.querySelector(HEADING);
-  if (heading) {
-    heading.setAttribute('tabindex', '-1');
-    heading.focus({ preventScroll: true });
+  const target = el.querySelector(FOCUS);
+  if (target) {
+    if (target.matches(HEADING)) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
   }
   return true;
 }

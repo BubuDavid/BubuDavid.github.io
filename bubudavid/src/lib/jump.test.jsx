@@ -52,6 +52,17 @@ test('archive rows are centred, and reduced motion scrolls at once', () => {
   expect(document.activeElement).toHaveTextContent('Spotify Analysis');
 });
 
+test("an archive jump focuses the row's own link, without a tabindex", () => {
+  document.body.innerHTML = PAGE;
+  jumpTo('spotify');
+  const link = document.querySelector('#a-04 .toc-line');
+  expect(document.activeElement).toBe(link);
+  expect(link).not.toHaveAttribute('tabindex');
+  jumpTo('lienzo');
+  expect(document.activeElement).toBe(document.querySelector('#lienzo .case-title'));
+  expect(document.activeElement).toHaveAttribute('tabindex', '-1');
+});
+
 test('the flash clears after 2.3 s and restarts on a second jump', () => {
   vi.useFakeTimers();
   document.body.innerHTML = PAGE;
