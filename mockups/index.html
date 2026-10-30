@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bubu · Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e1310;
+    --surface: #151c18;
+    --line: #26332b;
+    --ink: #e8efe9;
+    --muted: #8fa396;
+    --accent: #57E089;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(1200px 600px at 50% -10%, #1d3a28 0%, var(--bg) 60%) fixed, var(--bg);
+    color: var(--ink);
+    font-family: "Poppins", system-ui, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 56px 24px 80px; }
+  header { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; margin-bottom: 40px; }
+  header img { width: 72px; height: 72px; border-radius: 50%; border: 2px solid var(--accent); box-shadow: 0 0 12px rgba(87,224,137,.45); object-fit: cover; }
+  .kicker { font-family: "JetBrains Mono", monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: clamp(26px, 4vw, 40px); font-weight: 700; line-height: 1.1; }
+  .intro { max-width: 760px; color: var(--muted); margin-bottom: 40px; }
+  .intro a { color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; }
+  .card {
+    display: flex; flex-direction: column;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    overflow: hidden; text-decoration: none; color: inherit;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+  }
+  .card:hover, .card:focus-visible { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 1px var(--accent); outline: none; }
+  .thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #0a0d0b; border-bottom: 1px solid var(--line); }
+  .thumb iframe {
+    position: absolute; top: 0; left: 0;
+    width: 1440px; height: 900px; border: 0;
+    transform-origin: 0 0; pointer-events: none;
+  }
+  .meta { padding: 18px 20px 20px; display: grid; gap: 6px; }
+  .num { font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--accent); }
+  .meta h2 { font-size: 20px; font-weight: 600; }
+  .meta p { color: var(--muted); font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .tags span { font-family: "JetBrains Mono", monospace; font-size: 11px; padding: 3px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+  section.content { margin-top: 64px; }
+  section.content h3 { font-size: 22px; margin-bottom: 6px; }
+  section.content > p { color: var(--muted); margin-bottom: 20px; max-width: 760px; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 720px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  tr:last-child td { border-bottom: 0; }
+  td b { color: var(--ink); }
+  td.dim { color: var(--muted); }
+  footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
+  @media (max-width: 480px) {
+    .wrap { padding: 32px 16px 56px; }
+    .grid { grid-template-columns: 1fr; }
+    header img { width: 56px; height: 56px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="../bubudavid/public/assets/pp.jpg" alt="David (Bubu)">
+    <div>
+      <div class="kicker">Rediseño · exploración</div>
+      <h1>Seis maneras de presentarte</h1>
+    </div>
+  </header>
+
+  <p class="intro">
+    Prototipos desechables para reaccionar, no para conservar tal cual. Todos usan el mismo contenido:
+    tu foto, tus 8 proyectos reales de la página actual (como “Lab”) y 6 proyectos laborales inventados,
+    cada uno “nacido” de un proyecto estudiantil. El texto completo está en <code>mockups/CONTENT.md</code>.
+    Referencia: <a href="https://bubudavid.github.io/" target="_blank" rel="noreferrer">tu página actual</a>.
+  </p>
+
+  <div class="grid">
+    <a class="card" href="07-metro-editorial.html">
+      <div class="thumb"><iframe src="07-metro-editorial.html" loading="lazy" tabindex="-1" title="Vista previa Metro + Editorial"></iframe></div>
+      <div class="meta">
+        <span class="num">07 · elegida</span>
+        <h2>Metro + Editorial</h2>
+        <p>La combinación que elegiste: el mapa del Metro como índice de la revista. Cada estación te lleva a su caso de estudio, a su entrada corta o a su fila en el archivo del Lab.</p>
+        <div class="tags"><span>linaje</span><span>casos de estudio</span><span>claro</span></div>
+      </div>
+    </a>
+    <a class="card" href="01-orbita.html">
+      <div class="thumb"><iframe src="01-orbita.html" loading="lazy" tabindex="-1" title="Vista previa Órbita"></iframe></div>
+      <div class="meta">
+        <span class="num">01</span>
+        <h2>Órbita</h2>
+        <p>Tu estilo actual, cuatro años después: el verde neón, la foto con proyectos orbitando, ahora con un bento de trabajo y un “Lab” de dónde empezaste.</p>
+        <div class="tags"><span>evolución</span><span>oscuro</span><span>bento</span></div>
+      </div>
+    </a>
+    <a class="card" href="02-terminal.html">
+      <div class="thumb"><iframe src="02-terminal.html" loading="lazy" tabindex="-1" title="Vista previa Terminal"></iframe></div>
+      <div class="meta">
+        <span class="num">02</span>
+        <h2>Terminal</h2>
+        <p>La página es un editor de código: árbol de archivos, pestañas, vista previa de cada proyecto y una terminal que acepta comandos.</p>
+        <div class="tags"><span>interactivo</span><span>dev</span><span>oscuro</span></div>
+      </div>
+    </a>
+    <a class="card" href="03-editorial.html">
+      <div class="thumb"><iframe src="03-editorial.html" loading="lazy" tabindex="-1" title="Vista previa Editorial"></iframe></div>
+      <div class="meta">
+        <span class="num">03</span>
+        <h2>Editorial</h2>
+        <p>Casos de estudio impresos como revista: problema, enfoque y resultado, con cifras grandes. La opción más seria, para reclutadores.</p>
+        <div class="tags"><span>casos de estudio</span><span>tipografía</span><span>claro</span></div>
+      </div>
+    </a>
+    <a class="card" href="04-bento.html">
+      <div class="thumb"><iframe src="04-bento.html" loading="lazy" tabindex="-1" title="Vista previa Bento"></iframe></div>
+      <div class="meta">
+        <span class="num">04</span>
+        <h2>Bento brutalista</h2>
+        <p>Toda la página es una cuadrícula de mosaicos con bordes gruesos y colores planos, con Bubu el dinosaurio como mascota.</p>
+        <div class="tags"><span>juguetón</span><span>personalidad</span><span>color</span></div>
+      </div>
+    </a>
+    <a class="card" href="05-metro.html">
+      <div class="thumb"><iframe src="05-metro.html" loading="lazy" tabindex="-1" title="Vista previa Metro"></iframe></div>
+      <div class="meta">
+        <span class="num">05</span>
+        <h2>Metro</h2>
+        <p>Tu carrera como mapa del Metro de la CDMX: cada línea es un tema y une tus proyectos estudiantiles con los laborales que salieron de ellos.</p>
+        <div class="tags"><span>linaje</span><span>mapa</span><span>interactivo</span></div>
+      </div>
+    </a>
+    <a class="card" href="06-chat.html">
+      <div class="thumb"><iframe src="06-chat.html" loading="lazy" tabindex="-1" title="Vista previa Chat"></iframe></div>
+      <div class="meta">
+        <span class="num">06</span>
+        <h2>Chat</h2>
+        <p>Construyes agentes conversacionales, así que tu perfil es una conversación guionizada, con tarjetas tipo Teams y un perfil fijo para quien no quiera chatear.</p>
+        <div class="tags"><span>conversacional</span><span>producto</span><span>claro</span></div>
+      </div>
+    </a>
+  </div>
+
+  <section class="content">
+    <h3>Proyectos laborales inventados</h3>
+    <p>Basados en lo que construyes con Amaia y en tus proyectos estudiantiles. La empresa (Ceiba Data) y todas las cifras son ficticias; ningún cliente real aparece.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Proyecto</th><th>Qué es</th><th>Cifra principal</th><th>Nació de</th></tr></thead>
+        <tbody>
+          <tr><td><b>Pulso</b></td><td>Copiloto de KPIs en Microsoft Teams: preguntas en lenguaje natural, alertas, planes de acción y verificación automática.</td><td class="dim">Diagnóstico de 5 días → 25 min</td><td class="dim">Socorro Bot</td></tr>
+          <tr><td><b>Lienzo</b></td><td>Tableros que se diseñan solos a partir de una pregunta; el modelo planea, Python calcula.</td><td class="dim">0 cifras inventadas en 500 respuestas</td><td class="dim">Spotify Analysis</td></tr>
+          <tr><td><b>Glosa</b></td><td>Capa semántica como código: compila preguntas de negocio a SQL para Postgres, Snowflake y Fabric.</td><td class="dim">Onboarding de 6 semanas → 4 días</td><td class="dim">Bubufy</td></tr>
+          <tr><td><b>Ruta</b></td><td>Planificador de rutas y turnos para promotores de trade marketing.</td><td class="dim">18% menos km recorridos</td><td class="dim">Hacedor de Horarios + RRT Dijkstra</td></tr>
+          <tr><td><b>Gemelos</b></td><td>Clustering para encontrar oficinas comparables y no atribuir a un plan una mejora que fue del mercado.</td><td class="dim">27% de “éxitos” reclasificados</td><td class="dim">Color Picker</td></tr>
+          <tr><td><b>Mensajero</b></td><td>Servicio de mensajería proactiva a Teams y WhatsApp con reintentos e idempotencia.</td><td class="dim">0 duplicados desde el lanzamiento</td><td class="dim">Spotwipy</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>&lt;&gt; Made with 💖 in 🇲🇽🌮</footer>
+</div>
+<script>
+  // Scale each 1440×900 preview iframe to fill its thumbnail box.
+  const fit = () => document.querySelectorAll('.thumb').forEach(t => {
+    const f = t.querySelector('iframe');
+    f.style.transform = `scale(${t.clientWidth / 1440})`;
+  });
+  addEventListener('resize', fit);
+  fit();
+</script>
+</body>
+</html>

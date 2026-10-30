@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F3EFE6">
+<title>Bubu · Issue Nº 04</title>
+<meta name="description" content="David Pedroza Segoviano, software engineer in México. AI agents and data platforms, written up as case studies.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=Inter+Tight:ital,wght@0,400..700;1,400..700&display=swap">
+<style>
+/* ------------------------------------------------------------------
+   03 · Editorial. One ink, one green, warm paper.
+------------------------------------------------------------------- */
+:root{
+  --paper:#F3EFE6;
+  --paper-2:#EAE5D8;
+  --ink:#17160F;
+  --ink-2:#3D3A32;
+  --ink-3:#6B675C;
+  --hair:rgba(23,22,15,.2);
+  --green:#1F5C3A;
+  --tint:#D9E1D2;
+  --serif:"Fraunces",ui-serif,Georgia,"Times New Roman",serif;
+  --sans:"Inter Tight","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --mono:ui-monospace,"SFMono-Regular","JetBrains Mono",Menlo,Consolas,monospace;
+  --gutter:clamp(16px,3.4vw,48px);
+  --gap:clamp(14px,1.8vw,28px);
+  --maxw:1440px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;color-scheme:light;scroll-behavior:smooth;scroll-padding-top:20px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:clamp(1rem,.96rem + .18vw,1.0625rem);line-height:1.6;
+  font-kerning:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:clip;
+}
+img,svg{max-width:100%}
+h1,h2,h3,h4,p,ol,ul,dl,dd,figure,blockquote{margin:0}
+ol,ul{padding:0;list-style:none}
+a{color:inherit}
+b,strong{font-weight:600}
+::selection{background:var(--green);color:var(--paper)}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:1px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* Type utilities */
+.label,.kicker{font-family:var(--sans);font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;line-height:1.4}
+.kicker{color:var(--green)}
+.muted{color:var(--ink-3)}
+.ln{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.2em;text-decoration-color:rgba(23,22,15,.4);transition:color .15s}
+.ln:hover{color:var(--green);text-decoration-color:currentColor}
+.ico{width:.8em;height:.8em;vertical-align:-.04em;flex:none}
+.standfirst{font-family:var(--serif);font-size:clamp(1.25rem,1rem + .9vw,1.625rem);line-height:1.3;font-weight:380;letter-spacing:-.005em;text-wrap:pretty}
+.body p{hyphens:auto;text-wrap:pretty}
+.body p + p{margin-top:.85em}
+.end::after{content:"";display:inline-block;width:.5em;height:.5em;background:var(--green);margin-left:.4em;vertical-align:.02em}
+
+/* Layout */
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+.g12{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gap)}
+.g12 > *{grid-column:1 / -1;min-width:0}
+@media (min-width:720px){.g12{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media (min-width:1024px){.g12{grid-template-columns:repeat(12,minmax(0,1fr))}}
+.rule-tt{display:block;border:0;margin:0;height:3px;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);box-sizing:content-box}
+
+/* ---------------- Masthead ---------------- */
+.mast{padding-top:clamp(12px,1.6vw,20px)}
+.mast-strip{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;padding-bottom:10px;border-bottom:1px solid var(--ink)}
+.mast-mid{display:none}
+@media (min-width:720px){.mast-mid{display:inline}}
+.mast-main{padding-block:clamp(8px,1.4vw,18px) clamp(16px,2vw,26px)}
+.nameplate{font-family:var(--serif);font-weight:560;font-size:26vw;line-height:.9;letter-spacing:0;color:var(--ink);font-variation-settings:"opsz" 144}
+.np{display:flex;justify-content:space-between;white-space:nowrap}
+.mast-meta{margin-top:14px;display:grid;gap:18px}
+.issue{display:flex;flex-direction:column;gap:6px}
+.issue-no{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.5rem,1.2rem + 1vw,2.125rem);line-height:1}
+.mast-index > .label{padding-bottom:6px;border-bottom:1px solid var(--ink)}
+.mast-index ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}
+.mast-index a{display:flex;gap:10px;align-items:baseline;text-decoration:none;font-size:.875rem;line-height:1.3;padding:6px 0;border-bottom:1px solid var(--hair);transition:color .15s}
+.mast-index a:hover{color:var(--green)}
+.mast-index .pg{font-family:var(--serif);color:var(--green);font-variant-numeric:tabular-nums lining-nums;min-width:1.4em}
+@media (min-width:720px){
+  .nameplate{font-size:24vw}
+  .mast-meta{grid-template-columns:minmax(0,1fr) minmax(0,2fr);column-gap:var(--gap);align-items:start}
+}
+@media (min-width:1024px){
+  .mast-main{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:end}
+  .nameplate{grid-column:1 / 10;font-size:17vw}
+  .mast-meta{grid-column:10 / 13;margin:0;display:flex;flex-direction:column;justify-content:space-between;gap:22px;align-self:stretch;border-left:1px solid var(--ink);padding-left:var(--gap)}
+  .mast-index ol{grid-template-columns:1fr}
+}
+
+/* ---------------- Cover story ---------------- */
+.cover{padding-block:clamp(36px,5.5vw,84px) clamp(56px,8vw,120px)}
+.cover-head{margin-bottom:clamp(28px,4vw,56px)}
+.cover-head .kicker{display:flex;gap:14px;align-items:baseline;margin-bottom:clamp(14px,2vw,22px)}
+.folio{color:var(--ink-3)}
+.statement{font-family:var(--serif);font-weight:380;font-size:clamp(2.3rem,1.2rem + 5vw,6.25rem);line-height:1.01;letter-spacing:-.028em;text-wrap:balance;max-width:16.5em}
+.statement em{font-style:italic;font-weight:360;color:var(--green)}
+
+.cover-photo{margin-bottom:36px}
+.duo{position:relative;isolation:isolate;overflow:hidden;background:var(--paper)}
+.duo img{display:block;width:100%;height:auto;aspect-ratio:4 / 5;object-fit:cover;object-position:74% 40%;filter:grayscale(1) contrast(1.3) brightness(1.02)}
+.duo::before,.duo::after{content:"";position:absolute;inset:0;pointer-events:none}
+.duo::before{background:var(--green);mix-blend-mode:screen}
+.duo::after{background:var(--paper);mix-blend-mode:multiply}
+.cap{margin-top:10px;padding-top:8px;border-top:1px solid var(--ink);font-size:.8125rem;line-height:1.5;color:var(--ink-2);text-wrap:pretty}
+.fig-n{font-family:var(--sans);font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-right:.7em;white-space:nowrap}
+
+.cover-intro .standfirst{padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid var(--hair)}
+.dropcap > p:first-child::first-letter{float:left;font-family:var(--serif);font-weight:500;font-size:5.1em;line-height:.8;margin:.07em .14em 0 -.02em;color:var(--green)}
+.lead-in{font-size:.8em;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+.facts{margin-top:26px;display:grid}
+.facts div{display:grid;grid-template-columns:5.25rem minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--hair);font-size:.9375rem;line-height:1.45}
+.facts dt{padding-top:.2em}
+.cover-links{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px 22px;font-size:.9375rem}
+.cover-links a{display:inline-flex;align-items:center;gap:7px}
+
+.numbers{margin-top:44px}
+.numbers > .label{padding-bottom:8px;border-bottom:1px solid var(--ink)}
+.numbers dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--gap)}
+.numbers dl > div{display:flex;flex-direction:column-reverse;justify-content:flex-end;padding:14px 0 16px;border-bottom:1px solid var(--hair)}
+.numbers dd{font-family:var(--serif);font-weight:330;font-size:clamp(2.75rem,2rem + 2.4vw,4.25rem);line-height:.95;letter-spacing:-.035em;font-variant-numeric:lining-nums}
+.numbers dt{font-size:.8125rem;line-height:1.35;color:var(--ink-2);margin-top:8px}
+.numbers dt small{display:block;color:var(--ink-3);font-size:inherit}
+
+@media (min-width:720px){
+  .cover-photo{grid-column:1 / 4;margin:0}
+  .cover-intro{grid-column:4 / 7}
+  .numbers{grid-column:1 / -1}
+  .numbers dl{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (min-width:1024px){
+  .cover-head{grid-column:1 / 12}
+  .cover-photo{grid-column:1 / 6;grid-row:2}
+  .cover-intro{grid-column:6 / 10;grid-row:2}
+  .numbers{grid-column:10 / 13;grid-row:2;margin:0;border-left:1px solid var(--hair);padding-left:var(--gap)}
+  .numbers dl{grid-template-columns:1fr}
+}
+
+/* ---------------- Part openers ---------------- */
+.part{padding-top:clamp(48px,7vw,104px)}
+.part-head .g12{padding-top:18px;row-gap:10px}
+.part-no{font-family:var(--serif);font-style:italic;font-size:clamp(1.125rem,1rem + .5vw,1.5rem);color:var(--green);line-height:1.2}
+.part-title{font-family:var(--serif);font-weight:360;font-size:clamp(2.75rem,1.4rem + 5vw,6rem);line-height:.95;letter-spacing:-.032em;text-wrap:balance}
+.part-dek{color:var(--ink-2);max-width:38ch;text-wrap:pretty;margin-top:6px}
+.part-dek .folio{display:block;margin-top:10px}
+@media (min-width:1024px){
+  .part-no{grid-column:1 / 4}
+  .part-title{grid-column:4 / 10}
+  .part-dek{grid-column:10 / 13;align-self:end;margin:0}
+}
+
+/* ---------------- Case studies ---------------- */
+.case{padding-block:clamp(44px,6vw,96px)}
+.case + .case{border-top:1px solid var(--ink)}
+.case-grid{row-gap:clamp(22px,3vw,40px)}
+.case-rail{display:flex;align-items:baseline;gap:16px}
+.case-num{font-family:var(--serif);font-weight:300;font-size:clamp(4rem,2rem + 7vw,9rem);line-height:.8;letter-spacing:-.045em;color:var(--green);font-variant-numeric:lining-nums}
+.case-rail .label{color:var(--ink-3)}
+.case-rail .label b{display:block;color:var(--ink);font-weight:600}
+.case-title{font-family:var(--serif);font-weight:400;font-size:clamp(3.25rem,1.4rem + 7.2vw,8.75rem);line-height:.86;letter-spacing:-.04em;margin:12px 0 clamp(14px,2vw,24px)}
+.case-head .standfirst{font-size:clamp(1.3rem,1rem + 1.2vw,2rem);max-width:31ch}
+
+.margin-note{font-size:.875rem;line-height:1.5;color:var(--ink-2);border-left:2px solid var(--green);padding:2px 0 2px 14px;max-width:40ch}
+.margin-note .label{display:block;color:var(--green);margin-bottom:6px}
+.margin-note .see{display:block;margin-top:8px;font-family:var(--serif);font-style:italic;font-size:.9375rem;color:var(--ink)}
+
+.pao{display:grid;gap:26px}
+.pao h4{display:flex;gap:.55em;align-items:baseline;padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--ink)}
+.pao h4 i{font-family:var(--serif);font-weight:400;font-size:1rem;letter-spacing:0;text-transform:none;color:var(--green)}
+.fnref{font-size:.68em;line-height:0;vertical-align:.55em;margin-left:.08em}
+.fnref a{color:var(--green);text-decoration:none;font-weight:600;padding:0 .1em}
+.fnref a:hover{text-decoration:underline}
+
+.feature{display:grid;gap:clamp(26px,3vw,40px);align-items:start}
+.pull{border-top:3px solid var(--ink);padding-top:12px}
+.pull > .label{color:var(--ink-2)}
+.pull-num{font-family:var(--serif);font-weight:320;font-size:clamp(3.75rem,1.9rem + 7vw,8.75rem);line-height:.9;letter-spacing:-.045em;margin:12px 0 22px;font-variant-numeric:lining-nums}
+.pull-num .line{display:block;white-space:nowrap}
+.pull-num .u{font-size:.4em;font-style:italic;font-weight:360;letter-spacing:-.01em;margin-left:.14em}
+.pull-num .arr{color:var(--green);font-weight:300;margin-right:.1em;font-size:.82em}
+.zero{display:flex;align-items:flex-end;gap:clamp(14px,2vw,24px);margin:6px 0 20px}
+.zero .pull-num{font-size:clamp(8rem,4.5rem + 10vw,15rem);line-height:.78;margin:0}
+.zero-cap{font-family:var(--serif);font-style:italic;font-size:clamp(1.25rem,1rem + .8vw,1.75rem);line-height:1.2;max-width:11ch;padding-bottom:.35em}
+.mini{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--hair)}
+.mini > div{display:flex;flex-direction:column-reverse;justify-content:flex-end;padding:12px 12px 4px 0}
+.mini > div + div{border-left:1px solid var(--hair);padding-left:14px}
+.mini dd{font-family:var(--serif);font-size:clamp(1.6rem,1.3rem + .8vw,2.1rem);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums lining-nums}
+.mini dt{font-size:.8125rem;line-height:1.35;color:var(--ink-2);margin-top:6px}
+
+.case-notes{font-size:.8125rem;line-height:1.5;color:var(--ink-2)}
+.case-notes::before{content:"";display:block;width:64px;border-top:1px solid var(--ink);margin-bottom:10px}
+.case-notes p{scroll-margin-top:40vh;padding:2px 0;transition:background-color .3s}
+.case-notes p:target{background:var(--tint)}
+.case-notes a.fn-n{color:var(--green);font-weight:600;text-decoration:none;margin-right:.45em}
+
+@media (min-width:720px){
+  .pao{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:calc(var(--gap) * 2)}
+  .pao > section{position:relative}
+  .pao > section + section::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--gap) * -1);border-left:1px solid var(--hair)}
+}
+@media (min-width:1024px){
+  .case-rail{grid-column:1 / 4;grid-row:1;flex-direction:column;align-items:flex-start;gap:14px;padding-top:6px}
+  .case-head{grid-column:4 / 13;grid-row:1}
+  .margin-note{grid-column:1 / 4;grid-row:2;align-self:start;border-left:0;border-top:1px solid var(--ink);padding:10px 0 0;max-width:25ch}
+  .pao{grid-column:4 / 13;grid-row:2}
+  .feature{grid-column:1 / 13;grid-row:3;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap)}
+  .feature .pull{grid-column:1 / 6;grid-row:1}
+  .feature .fig{grid-column:6 / 13;grid-row:1}
+  .case--flip .feature .fig{grid-column:1 / 8}
+  .case--flip .feature .pull{grid-column:8 / 13}
+  .case--wide .feature .pull{grid-column:1 / 5}
+  .case--wide .feature .fig{grid-column:5 / 13}
+  .case-notes{grid-column:4 / 13;grid-row:4}
+}
+
+/* ---------------- Figures ---------------- */
+.fig{background:var(--paper-2);padding:clamp(14px,2vw,28px);container:fig / inline-size}
+.fig-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 0;padding-bottom:10px;margin-bottom:clamp(14px,2vw,22px);border-bottom:1px solid var(--ink)}
+.fig-title{font-family:var(--serif);font-style:italic;font-size:1.0625rem;line-height:1.3}
+.fig figcaption{margin-top:18px;padding-top:10px;border-top:1px solid var(--hair);font-size:.8125rem;line-height:1.5;color:var(--ink-2);text-wrap:pretty}
+.fig figcaption b{color:var(--ink)}
+.fig svg{display:block;width:100%;height:auto;margin-inline:auto;overflow:visible}
+.fig svg text{font-family:var(--sans);fill:var(--ink)}
+.fig svg .t-lab{font-size:11.5px;font-weight:600;letter-spacing:.12em}
+.fig svg .t-it{font-family:var(--serif);font-style:italic;font-size:14px}
+.fig svg .t-q{font-family:var(--serif);font-style:italic;font-size:16px}
+.fig svg .t-num{font-family:var(--serif);font-size:17px}
+.fig svg .t-sm{font-size:12px;fill:var(--ink-2)}
+.fig svg .t-g{fill:var(--green)}
+.fig svg .t-inv{fill:var(--paper)}
+.fig svg .s{fill:none;stroke:var(--ink);stroke-width:1}
+.fig svg .s-a{fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linejoin:round;stroke-linecap:round}
+.fig svg .s-g{fill:none;stroke:var(--green);stroke-width:1.75;stroke-linejoin:round;stroke-linecap:round}
+.fig svg .s-gt{fill:none;stroke:var(--green);stroke-width:1}
+.fig svg .s-dot{fill:none;stroke:var(--ink-3);stroke-width:1.2;stroke-dasharray:1.5 3.5;stroke-linecap:round}
+.fig svg .s-dash{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:5 4}
+.fig svg .s-hair{fill:none;stroke:var(--ink-3);stroke-width:1}
+.fig svg .f-paper{fill:var(--paper);stroke:var(--ink);stroke-width:1}
+.fig svg .f-tint{fill:var(--tint);stroke:var(--green);stroke-width:1}
+.fig svg .f-ink{fill:var(--ink)}
+.fig svg .f-g{fill:var(--green)}
+.fig svg .band{fill:var(--tint)}
+.fig svg .mk{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.sub{display:block;font-family:var(--serif);font-style:italic;font-size:1.125rem;color:var(--green);margin-bottom:4px}
+.fig-pair{display:grid;gap:26px}
+.fig-pair > div{min-width:0}
+.svg-ring{max-width:380px}
+.svg-drift{max-width:420px}
+.svg-flow{max-width:420px}
+@container fig (min-width:600px){
+  .fig-pair{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center;gap:22px}
+}
+.fig-split{display:grid;gap:22px}
+.legend{counter-reset:step;display:grid;gap:0;align-content:center}
+.legend li{display:grid;grid-template-columns:1.75rem minmax(0,1fr);gap:2px 8px;padding:10px 0;border-top:1px solid var(--hair);font-size:.875rem;line-height:1.45;color:var(--ink-2)}
+.legend li:first-child{border-top:1px solid var(--ink)}
+.legend li::before{counter-increment:step;content:counter(step);grid-row:1 / span 2;font-family:var(--serif);font-size:1.25rem;line-height:1.1;color:var(--green)}
+.legend b{display:block;font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+@container fig (min-width:620px){
+  .fig-split{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:center;gap:28px}
+}
+
+/* Glosa figure, built in HTML so the code stays real text */
+.gl-box{border:1px solid var(--ink);background:var(--paper);padding:12px 14px 14px;min-width:0}
+.gl-q p{font-family:var(--serif);font-style:italic;font-size:clamp(1.0625rem,1rem + .4vw,1.25rem);line-height:1.3;margin-top:4px}
+.gl-layer{background:var(--tint);border-color:var(--green)}
+.gl-layer .label{color:var(--green)}
+.gl pre{margin:8px 0 0;font-family:var(--mono);font-size:.72rem;line-height:1.6;overflow-x:auto;white-space:pre;color:var(--ink);tab-size:2}
+.gl pre .c{color:var(--ink-3)}
+.gl pre b{font-weight:600;color:var(--green);background:rgba(31,92,58,.12);box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:0 1px}
+.gl-step{position:relative;height:44px}
+.gl-step::before{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:1px solid var(--ink)}
+.gl-step::after{content:"";position:absolute;left:calc(50% - 4px);bottom:0;width:7px;height:7px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);transform:translateY(-1px) rotate(45deg);transform-origin:center}
+.gl-step span{position:absolute;left:calc(50% + 12px);top:50%;transform:translateY(-50%);font-family:var(--serif);font-style:italic;font-size:.875rem;color:var(--ink-2);white-space:nowrap}
+.gl-engines{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.gl-eng .label{display:flex;justify-content:space-between;gap:8px}
+.gl-eng .label span{color:var(--ink-3);letter-spacing:.08em}
+@container fig (min-width:680px){
+  .gl-step--fan{display:none}
+  .gl-layer{position:relative}
+  .gl-layer::after{content:"";position:absolute;left:50%;bottom:-17px;height:16px;border-left:1px solid var(--ink)}
+  .gl-engines{position:relative;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding-top:32px}
+  .gl-engines::before{content:"";position:absolute;top:16px;left:calc((100% - 32px) / 6);right:calc((100% - 32px) / 6);border-top:1px solid var(--ink)}
+  .gl-eng{position:relative}
+  .gl-eng::before{content:"";position:absolute;left:50%;top:-17px;height:16px;border-left:1px solid var(--ink)}
+}
+
+/* ---------------- Also in this issue ---------------- */
+.idx{width:100%;border-collapse:collapse;margin-top:clamp(22px,3vw,40px)}
+.idx-n{font-family:var(--serif);color:var(--green);font-variant-numeric:tabular-nums lining-nums}
+.idx-name{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,1.3rem + 1.6vw,2.75rem);line-height:1;letter-spacing:-.025em}
+.idx-line{margin-top:8px;font-size:1rem;line-height:1.45}
+.idx-grew{margin-top:8px;font-size:.8125rem;color:var(--ink-3)}
+.idx-role,.idx-year{font-size:.9375rem;color:var(--ink-2)}
+.idx-year{font-variant-numeric:tabular-nums lining-nums}
+.idx-big{display:block;font-family:var(--serif);font-weight:330;font-size:clamp(2.6rem,1.7rem + 2.4vw,3.75rem);line-height:.95;letter-spacing:-.035em;font-variant-numeric:lining-nums}
+.idx-what{display:block;margin-top:6px;font-size:.9375rem;line-height:1.4}
+.idx-more{display:block;margin-top:6px;font-size:.8125rem;line-height:1.45;color:var(--ink-3)}
+@media (min-width:720px){
+  .idx th{text-align:left;font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);padding:0 18px 10px 0;border-bottom:1px solid var(--ink)}
+  .idx td{padding:24px 22px 26px 0;border-bottom:1px solid var(--hair);vertical-align:top}
+  .idx tr:last-child td{border-bottom-color:var(--ink)}
+  .idx td.idx-n{padding-top:32px}
+  .idx td.idx-role,.idx td.idx-year{padding-top:34px}
+}
+@media (max-width:719.98px){
+  .idx thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .idx,.idx tbody,.idx tr,.idx td{display:block}
+  .idx tr{display:grid;grid-template-columns:2.25rem minmax(0,1fr);column-gap:8px;padding:22px 0 24px;border-bottom:1px solid var(--hair)}
+  .idx tr:last-child{border-bottom-color:var(--ink)}
+  .idx td{padding:0}
+  .idx td.idx-n{grid-row:1 / span 4;padding-top:.55em}
+  .idx-p,.idx-role,.idx-year,.idx-res{grid-column:2}
+  .idx-role{margin-top:14px}
+  .idx-role::before,.idx-year::before{content:attr(data-label);display:inline-block;min-width:3.5rem;font-size:.6875rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .idx td.idx-res{margin-top:14px;padding-top:12px;border-top:1px solid var(--hair)}
+}
+
+/* ---------------- Archive ---------------- */
+.toc{margin-top:clamp(22px,3vw,40px);border-top:1px solid var(--ink)}
+.toc > li{display:grid;grid-template-columns:2.25rem minmax(0,1fr);column-gap:10px;padding:18px 0 20px;border-bottom:1px solid var(--hair);scroll-margin-top:30vh}
+.toc > li:target{background:var(--tint)}
+.toc-n{font-family:var(--serif);font-size:1rem;color:var(--green);font-variant-numeric:tabular-nums lining-nums;padding-top:.4em}
+.toc-line{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--ink)}
+.toc-title{font-family:var(--serif);font-weight:400;font-size:clamp(1.3rem,1.05rem + .9vw,1.875rem);line-height:1.15;letter-spacing:-.015em;min-width:0;transition:color .15s}
+.toc-dots{flex:1 1 1.5rem;min-width:1.25rem;overflow:hidden;white-space:nowrap;font-family:var(--serif);font-size:1rem;letter-spacing:.12em;color:var(--ink-3);transition:color .15s}
+.toc-dots::before{content:". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."}
+.toc-pg{display:inline-flex;align-items:baseline;gap:5px;font-family:var(--serif);font-size:1.25rem;font-variant-numeric:tabular-nums lining-nums}
+.toc-pg .ico{width:.55em;height:.55em;color:var(--green)}
+.toc-line:hover .toc-title,.toc-line:hover .toc-dots{color:var(--green)}
+.toc-desc{margin-top:6px;font-size:.9375rem;line-height:1.5;color:var(--ink-2);max-width:58ch;text-wrap:pretty}
+.toc-meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.75rem;line-height:1.5;color:var(--ink-3)}
+.toc-host{overflow-wrap:anywhere}
+.toc-into{color:var(--green);font-weight:600;text-decoration:none}
+.toc-into:hover{text-decoration:underline}
+@media (min-width:1024px){
+  .toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,auto);grid-auto-flow:column;column-gap:calc(var(--gap) * 2)}
+}
+
+/* ---------------- Back page ---------------- */
+.back{padding-top:clamp(56px,8vw,120px)}
+.back-grid{row-gap:48px;padding-top:22px}
+.back-title{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,1.4rem + 2vw,3rem);line-height:1;letter-spacing:-.025em;margin:8px 0 20px}
+.exp > li{display:grid;grid-template-columns:6.25rem minmax(0,1fr);gap:2px 16px;padding:16px 0;border-top:1px solid var(--hair)}
+.exp > li:first-child{border-top-color:var(--ink)}
+.exp-years{font-family:var(--serif);font-size:1rem;color:var(--green);font-variant-numeric:tabular-nums lining-nums;padding-top:.2em;grid-row:1 / span 3}
+.exp h3{font-family:var(--serif);font-weight:500;font-size:1.375rem;line-height:1.15;letter-spacing:-.01em}
+.exp-role{font-size:.9375rem;font-weight:600;margin-top:2px}
+.exp-role span{font-weight:400;color:var(--ink-3)}
+.exp-what{font-size:.9375rem;color:var(--ink-2);margin-top:4px}
+.tools > div{padding:12px 0;border-top:1px solid var(--hair)}
+.tools > div:first-child{border-top-color:var(--ink)}
+.tools dt{color:var(--green)}
+.tools dd{margin-top:4px;font-size:.9375rem;line-height:1.5}
+.mail-big{display:inline-block;margin-top:20px;font-family:var(--serif);font-style:italic;font-size:clamp(1.5rem,1.1rem + 1.4vw,2.25rem);line-height:1.1;letter-spacing:-.01em;overflow-wrap:anywhere}
+.social{margin-top:26px}
+.social a{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--hair);text-decoration:none;transition:color .15s}
+.social li:last-child a{border-bottom:1px solid var(--hair)}
+.social a:hover{color:var(--green)}
+.social .ico{width:1rem;height:1rem}
+.social .grow{flex:1}
+.social .label{min-width:0;overflow-wrap:anywhere;text-align:right;text-transform:none;letter-spacing:.02em;font-weight:500;font-size:.75rem}
+@media (max-width:719.98px){.back-tools > .kicker,.back-mail > .kicker{display:none}}
+@media (min-width:720px){
+  .back-exp{grid-column:1 / -1}
+  .back-tools{grid-column:1 / 4}
+  .back-mail{grid-column:4 / 7}
+}
+@media (min-width:1024px){
+  .back-exp{grid-column:1 / 6}
+  .back-tools{grid-column:6 / 9;border-left:1px solid var(--hair);padding-left:var(--gap)}
+  .back-mail{grid-column:9 / 13;border-left:1px solid var(--hair);padding-left:var(--gap)}
+}
+
+/* ---------------- Colophon ---------------- */
+.colophon{padding-block:clamp(56px,8vw,112px) 92px}
+.colo-grid{padding-top:22px;row-gap:30px}
+.colo-main p{font-family:var(--serif);font-size:clamp(1.0625rem,1rem + .3vw,1.25rem);line-height:1.5;max-width:54ch;margin-top:12px;text-wrap:pretty}
+.colo-main p i{font-weight:500}
+.colo-links ul{margin-top:12px;display:grid;gap:4px}
+.colo-links a{display:inline-flex;align-items:center;gap:7px}
+.made{font-family:var(--serif);font-size:clamp(1.25rem,1.1rem + .5vw,1.5rem);line-height:1.3;margin-top:12px}
+.made code{font-family:var(--mono);font-size:.8em;color:var(--green);margin-right:.4em}
+.colo-foot{margin-top:44px;padding-top:12px;border-top:1px solid var(--ink);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px}
+.colo-foot a{text-decoration:none}
+.colo-foot a:hover{color:var(--green)}
+@media (min-width:720px){
+  .colo-main{grid-column:1 / -1}
+  .colo-links{grid-column:1 / 4}
+  .colo-made{grid-column:4 / 7}
+}
+@media (min-width:1024px){
+  .colo-main{grid-column:1 / 7}
+  .colo-links{grid-column:8 / 10}
+  .colo-made{grid-column:10 / 13}
+}
+
+/* ---------------- Mockup pill + grid overlay ---------------- */
+.pill{position:fixed;left:12px;bottom:12px;z-index:60;display:flex;align-items:center;gap:10px;padding:5px 5px 5px 13px;background:var(--paper);border:1px solid var(--ink);border-radius:999px;font:500 12px/1 var(--sans);letter-spacing:.01em}
+.pill a{text-decoration:none;color:var(--ink);padding:4px 0}
+.pill a:hover{color:var(--green)}
+.pill-name{color:var(--ink-3);padding-left:10px;border-left:1px solid var(--hair)}
+.pill button{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--hair);border-radius:999px;padding:5px 10px;cursor:pointer}
+.pill button:hover{border-color:var(--ink)}
+.pill button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--paper)}
+.grid-overlay{position:fixed;inset:0;z-index:40;pointer-events:none;display:none}
+.show-grid .grid-overlay{display:block}
+.grid-overlay .wrap,.grid-overlay .g12{height:100%}
+.grid-overlay .g12 > span{grid-column:auto;background:rgba(31,92,58,.06);border-inline:1px solid rgba(31,92,58,.3)}
+.grid-overlay .g12 > span:nth-child(n+5){display:none}
+@media (min-width:720px){.grid-overlay .g12 > span:nth-child(-n+6){display:block}}
+@media (min-width:1024px){.grid-overlay .g12 > span:nth-child(n){display:block}}
+
+@media print{
+  .pill,.grid-overlay{display:none!important}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-ne" viewBox="0 0 12 12"><path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="square"/></symbol>
+    <symbol id="i-gh" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+    <symbol id="i-in" viewBox="0 0 16 16"><rect x=".75" y=".75" width="14.5" height="14.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><path fill="currentColor" d="M4 6.5h1.8V12H4zM4.9 3.6a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM7.1 6.5h1.7v.8c.3-.5.9-.95 1.85-.95 1.6 0 2.15 1 2.15 2.5V12H11V9.2c0-.7-.1-1.4-.95-1.4-.85 0-1.15.6-1.15 1.4V12H7.1z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 16 16"><path d="M1.5 3.5h13v9h-13zM1.75 3.75 8 9l6.25-5.25" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<nav class="pill" aria-label="Mockup navigation">
+  <a href="index.html">&larr; All mockups</a>
+  <span class="pill-name">03 · Editorial</span>
+  <button type="button" data-grid-toggle aria-pressed="false" title="Show the column grid (G)">Grid</button>
+</nav>
+
+<!-- ================= MASTHEAD ================= -->
+<header class="mast wrap" id="top">
+  <div class="mast-strip">
+    <span class="label">David Pedroza Segoviano</span>
+    <span class="label mast-mid">Software Engineer · AI agents &amp; data platforms</span>
+    <span class="label">Est. 2019</span>
+  </div>
+
+  <div class="mast-main">
+    <h1 class="nameplate">
+      <span class="sr-only">Bubu, the portfolio of David Pedroza Segoviano</span>
+      <span class="np" aria-hidden="true"><span>B</span><span>U</span><span>B</span><span>U</span></span>
+    </h1>
+
+    <div class="mast-meta">
+      <p class="issue">
+        <span class="issue-no">Issue Nº 04</span>
+        <span class="label">Autumn 2026 · México</span>
+      </p>
+      <nav class="mast-index" aria-label="In this issue">
+        <p class="label">In this issue</p>
+        <ol>
+          <li><a href="#cover"><span class="pg">02</span>Cover story</a></li>
+          <li><a href="#pulso"><span class="pg">06</span>Pulso</a></li>
+          <li><a href="#lienzo"><span class="pg">14</span>Lienzo</a></li>
+          <li><a href="#glosa"><span class="pg">22</span>Glosa</a></li>
+          <li><a href="#also"><span class="pg">30</span>Also in this issue</a></li>
+          <li><a href="#archive"><span class="pg">34</span>Archive · 2019–2022</a></li>
+          <li><a href="#experience"><span class="pg">42</span>Experience</a></li>
+          <li><a href="#colophon"><span class="pg">44</span>Colophon</a></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <hr class="rule-tt">
+</header>
+
+<main>
+
+<!-- ================= COVER STORY ================= -->
+<section class="cover wrap" id="cover" aria-labelledby="cover-h">
+  <div class="g12">
+    <div class="cover-head">
+      <p class="kicker">Cover story <span class="folio">p. 02</span></p>
+      <h2 class="statement" id="cover-h">I build the layer between a company's data and <em>the people who act on&nbsp;it.</em></h2>
+    </div>
+
+    <figure class="cover-photo">
+      <div class="duo">
+        <img src="../bubudavid/public/assets/pp.jpg" width="960" height="960" alt="David Pedroza Segoviano in a grey beanie and a black Future Lab hoodie, looking up and to the right, with a city skyline lit up at night behind him.">
+      </div>
+      <figcaption class="cap"><span class="fig-n">Fig. 1</span>David Pedroza Segoviano, Bubu to his friends, with a city at night behind him. Printed as a duotone in house green.</figcaption>
+    </figure>
+
+    <div class="cover-intro">
+      <p class="standfirst">Conversational agents in Microsoft Teams, semantic layers that turn business questions into SQL, and dashboards that design themselves.</p>
+      <div class="body dropcap">
+        <p>I <span class="lead-in">started out</span> writing schedule generators for my classmates and Spotify bots for fun. Today I ship LLM systems that leadership teams open every Monday morning.</p>
+        <p class="end">I care about numbers you can trust: the model plans, Python computes, and every answer can be traced back to a query.</p>
+      </div>
+      <dl class="facts">
+        <div><dt class="label">Now</dt><dd>AI Engineer at Ceiba Data, since 2023</dd></div>
+        <div><dt class="label">Open to</dt><dd>Interesting problems at the intersection of LLMs, data and product</dd></div>
+      </dl>
+      <p class="cover-links">
+        <a class="ln" href="https://github.com/BubuDavid" target="_blank" rel="noreferrer">GitHub<svg class="ico" aria-hidden="true"><use href="#i-ne"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="ln" href="https://www.linkedin.com/in/davidpedrozasegoviano/" target="_blank" rel="noreferrer">LinkedIn<svg class="ico" aria-hidden="true"><use href="#i-ne"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="ln" href="mailto:hola@bubudavid.me">hola@bubudavid.me</a>
+      </p>
+    </div>
+
+    <aside class="numbers" aria-labelledby="numbers-h">
+      <h3 class="label" id="numbers-h">By the numbers</h3>
+      <dl>
+        <div><dt>years shipping software</dt><dd>4+</dd></div>
+        <div><dt>production systems</dt><dd>6</dd></div>
+        <div><dt>weekly users on tools I built</dt><dd>1,400</dd></div>
+        <div><dt>SQL engines supported <small>Postgres, Snowflake, Microsoft Fabric</small></dt><dd>3</dd></div>
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= PART I · SELECTED WORK ================= -->
+<section class="part" id="work" aria-labelledby="work-h">
+  <header class="part-head wrap">
+    <hr class="rule-tt">
+    <div class="g12">
+      <p class="part-no">Part I</p>
+      <h2 class="part-title" id="work-h">Selected work</h2>
+      <p class="part-dek">Three systems I designed and shipped at Ceiba Data, written up in full. Each one began as a student project, named in the margin. <span class="label folio">pp. 06–29</span></p>
+    </div>
+  </header>
+
+  <!-- ---------- 01 · PULSO ---------- -->
+  <article class="case wrap" id="pulso" aria-labelledby="pulso-h">
+    <div class="g12 case-grid">
+      <div class="case-rail">
+        <span class="case-num" aria-hidden="true">01</span>
+        <p class="label"><b>Case study</b>p. 06</p>
+      </div>
+
+      <header class="case-head">
+        <p class="kicker">Backend &amp; AI lead · 2024 – now</p>
+        <h3 class="case-title" id="pulso-h">Pulso</h3>
+        <p class="standfirst">A KPI copilot that lives in Microsoft Teams. It warns leaders before a number misses, helps them find out why, and checks whether the fix worked.</p>
+      </header>
+
+      <aside class="margin-note" aria-label="Lineage">
+        <span class="label">Grew from</span>
+        <a class="ln" href="#a-01">Socorro Bot</a>, a WhatsApp bot that guided families through missing-person reports.
+        <span class="see">Archive Nº 01, p. 34</span>
+      </aside>
+
+      <div class="pao">
+        <section>
+          <h4 class="label"><i>i.</i>Problem</h4>
+          <div class="body"><p>Leaders learned a KPI had slipped weeks late, diagnosed it by hand in spreadsheets, and nobody checked whether the fix worked.</p></div>
+        </section>
+        <section>
+          <h4 class="label"><i>ii.</i>Approach</h4>
+          <div class="body"><p>A Teams bot and tab. People ask about company data in plain language. Pulso sends an alert when a KPI drifts off its trajectory, before it misses, and lets the team open an action plan with an owner, a date and a budget.<sup class="fnref"><a id="fnref-1" href="#fn-1" aria-label="Footnote 1">1</a></sup></p></div>
+        </section>
+        <section>
+          <h4 class="label"><i>iii.</i>Outcome</h4>
+          <div class="body"><p class="end">On the due date Pulso gives its own verdict. It compares the office with its peers to separate real wins from market-wide effects. It now has 1,400 weekly users across 3 companies and has verified 312 action plans.</p></div>
+        </section>
+      </div>
+
+      <div class="feature">
+        <div class="pull">
+          <p class="label">Time to diagnose a drop</p>
+          <p class="pull-num"><span class="sr-only">From 5 days to 25 minutes</span><span aria-hidden="true"><span class="line">5<span class="u">days</span></span><span class="line"><span class="arr">&rarr;</span>25<span class="u">min</span></span></span></p>
+          <dl class="mini">
+            <div><dt>weekly users across 3 companies</dt><dd>1,400</dd></div>
+            <div><dt>action plans verified</dt><dd>312</dd></div>
+          </dl>
+        </div>
+
+        <figure class="fig" aria-labelledby="fig2-cap">
+          <div class="fig-head"><span class="fig-n">Fig. 2</span><span class="fig-title">Detect, diagnose, act, verify</span></div>
+          <div class="fig-pair">
+            <div>
+              <span class="sub" aria-hidden="true">a</span>
+              <svg class="svg-ring" viewBox="0 0 360 360" role="img" aria-labelledby="ring-t ring-d">
+                <title id="ring-t">The Pulso loop</title>
+                <desc id="ring-d">A cycle of four steps. Detect a KPI drifting off its trajectory. Diagnose by asking the data in plain words. Act with a plan that has an owner, date and budget. Verify the result against twin offices, then start again.</desc>
+                <defs>
+                  <marker id="ah-ring" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse"><path class="mk" d="M2 1.5 8 5 2 8.5"/></marker>
+                </defs>
+                <path class="s" marker-end="url(#ah-ring)" d="M200.65 49.62 A132 132 0 0 1 310.38 159.35"/>
+                <path class="s" marker-end="url(#ah-ring)" d="M310.38 200.65 A132 132 0 0 1 200.65 310.38"/>
+                <path class="s" marker-end="url(#ah-ring)" d="M159.35 310.38 A132 132 0 0 1 49.62 200.65"/>
+                <path class="s" marker-end="url(#ah-ring)" d="M49.62 159.35 A132 132 0 0 1 159.35 49.62"/>
+                <circle cx="180" cy="48" r="11" class="s-gt"/>
+                <circle cx="180" cy="48" r="6.5" class="f-g"/>
+                <circle cx="312" cy="180" r="6.5" class="f-paper"/>
+                <circle cx="180" cy="312" r="6.5" class="f-paper"/>
+                <circle cx="48" cy="180" r="6.5" class="f-paper"/>
+                <text x="180" y="88" text-anchor="middle" class="t-lab t-g">01 DETECT</text>
+                <text x="180" y="107" text-anchor="middle" class="t-it">a KPI drifts off</text>
+                <text x="180" y="124" text-anchor="middle" class="t-it">its trajectory</text>
+                <text x="292" y="170" text-anchor="end" class="t-lab">02 DIAGNOSE</text>
+                <text x="292" y="189" text-anchor="end" class="t-it">ask the data</text>
+                <text x="292" y="205" text-anchor="end" class="t-it">in plain words</text>
+                <text x="180" y="244" text-anchor="middle" class="t-lab">03 ACT</text>
+                <text x="180" y="263" text-anchor="middle" class="t-it">a plan with owner,</text>
+                <text x="180" y="279" text-anchor="middle" class="t-it">date and budget</text>
+                <text x="68" y="170" class="t-lab">04 VERIFY</text>
+                <text x="68" y="189" class="t-it">verdict against</text>
+                <text x="68" y="205" class="t-it">twin offices</text>
+              </svg>
+            </div>
+            <div>
+              <span class="sub" aria-hidden="true">b</span>
+              <svg class="svg-drift" viewBox="0 0 320 210" role="img" aria-labelledby="drift-t drift-d">
+                <title id="drift-t">A KPI drifting off its trajectory</title>
+                <desc id="drift-d">The target rises steadily inside a tolerance band. The real KPI follows it, then slips below the band. Pulso raises the alert at that point, well before the due date, where the projected value would miss the target.</desc>
+                <polygon class="band" points="24,147 300,27 300,53 24,173"/>
+                <line class="s-dash" x1="24" y1="160" x2="300" y2="40"/>
+                <line class="s-dot" x1="200" y1="110" x2="200" y2="180"/>
+                <polyline class="s-a" points="24,162 46,151 68,144 90,133 112,124 134,116 156,110 178,104 200,103"/>
+                <polyline class="s-dot" points="200,103 250,101.5 300,100"/>
+                <circle cx="300" cy="100" r="3.5" class="f-paper"/>
+                <path class="s-gt" d="M307 41h4v58h-4"/>
+                <line class="s" x1="24" y1="180" x2="300" y2="180"/>
+                <line class="s" x1="24" y1="176" x2="24" y2="184"/>
+                <line class="s" x1="300" y1="176" x2="300" y2="184"/>
+                <line class="s-gt" x1="183" y1="66" x2="183" y2="94"/>
+                <circle cx="183" cy="104" r="9.5" class="s-gt"/>
+                <circle cx="183" cy="104" r="5" class="f-g"/>
+                <text x="183" y="44" text-anchor="middle" class="t-lab t-g">ALERT</text>
+                <text x="183" y="60" text-anchor="middle" class="t-it">before the miss</text>
+                <text x="294" y="20" text-anchor="end" class="t-it">trajectory</text>
+                <text x="300" y="121" text-anchor="end" class="t-it">projected miss</text>
+                <text x="24" y="199" class="t-sm">week 1</text>
+                <text x="200" y="199" text-anchor="middle" class="t-sm">today</text>
+                <text x="300" y="199" text-anchor="end" class="t-sm">due date</text>
+              </svg>
+            </div>
+          </div>
+          <figcaption id="fig2-cap"><b>a.</b> The loop Pulso runs for every KPI. The verdict compares each office with its twins, found by <a class="ln" href="#gemelos">Gemelos</a> (p. 31). <b>b.</b> Pulso raises the alert when the KPI leaves its tolerance band, while there is still time to act.</figcaption>
+        </figure>
+      </div>
+
+      <footer class="case-notes">
+        <p id="fn-1"><a class="fn-n" href="#fnref-1" aria-label="Back to text, footnote 1">1</a>Stack: Python, FastAPI, LangGraph, Azure OpenAI, Teams SDK, PostgreSQL, Next.js.</p>
+      </footer>
+    </div>
+  </article>
+
+  <!-- ---------- 02 · LIENZO ---------- -->
+  <article class="case case--flip wrap" id="lienzo" aria-labelledby="lienzo-h">
+    <div class="g12 case-grid">
+      <div class="case-rail">
+        <span class="case-num" aria-hidden="true">02</span>
+        <p class="label"><b>Case study</b>p. 14</p>
+      </div>
+
+      <header class="case-head">
+        <p class="kicker">Creator · 2025</p>
+        <h3 class="case-title" id="lienzo-h">Lienzo</h3>
+        <p class="standfirst">Dashboards that design themselves from one question. The model plans the page and Python does the arithmetic.</p>
+      </header>
+
+      <aside class="margin-note" aria-label="Lineage">
+        <span class="label">Grew from</span>
+        <a class="ln" href="#a-04">Spotify Analysis</a>, personal insights from your top 50 songs.
+        <span class="see">Archive Nº 04, p. 37</span>
+      </aside>
+
+      <div class="pao">
+        <section>
+          <h4 class="label"><i>i.</i>Problem</h4>
+          <div class="body"><p>Each new question from leadership meant someone had to build a dashboard by hand. Asking a language model directly was faster, but nobody could trust the figures it wrote.</p></div>
+        </section>
+        <section>
+          <h4 class="label"><i>ii.</i>Approach</h4>
+          <div class="body"><p>A planner model reads one question and designs the layout. Parallel workers fill each widget with queries over the semantic layer.<sup class="fnref"><a id="fnref-2" href="#fn-2" aria-label="Footnote 2">2</a></sup> Python computes every number. The model never writes one.</p></div>
+        </section>
+        <section>
+          <h4 class="label"><i>iii.</i>Outcome</h4>
+          <div class="body"><p class="end">A question becomes a dashboard in about 40 seconds, built from 9 widget types. An audit of 500 answers found 0 hallucinated figures.</p></div>
+        </section>
+      </div>
+
+      <div class="feature">
+        <div class="pull">
+          <p class="label">Audit of 500 answers</p>
+          <div class="zero">
+            <p class="pull-num">0</p>
+            <p class="zero-cap">hallucinated figures</p>
+          </div>
+          <dl class="mini">
+            <div><dt>from question to dashboard</dt><dd>~40 s</dd></div>
+            <div><dt>widget types</dt><dd>9</dd></div>
+          </dl>
+        </div>
+
+        <figure class="fig" aria-labelledby="fig3-cap">
+          <div class="fig-head"><span class="fig-n">Fig. 3</span><span class="fig-title">From one question to a dashboard</span></div>
+          <div class="fig-split">
+            <svg class="svg-flow" viewBox="0 0 400 470" role="img" aria-labelledby="flow-t flow-d">
+              <title id="flow-t">How Lienzo builds a dashboard</title>
+              <desc id="flow-d">A question goes to a planner model, which designs the layout. Four workers run queries over the semantic layer in parallel. Python computes every number. The dashboard is ready about 40 seconds after the question.</desc>
+              <defs>
+                <marker id="ah-flow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse"><path class="mk" d="M2 1.5 8 5 2 8.5"/></marker>
+              </defs>
+              <rect x="20" y="12" width="320" height="58" class="f-paper"/>
+              <text x="34" y="34" class="t-lab">QUESTION</text>
+              <text x="34" y="57" class="t-q">Why did margin dip in the north?</text>
+              <path class="s" marker-end="url(#ah-flow)" d="M180 70V94"/>
+              <rect x="95" y="96" width="170" height="48" class="f-tint"/>
+              <text x="180" y="116" text-anchor="middle" class="t-lab t-g">PLANNER MODEL</text>
+              <text x="180" y="133" text-anchor="middle" class="t-sm">designs the layout</text>
+              <path class="s" d="M180 144V156M60 156H300"/>
+              <path class="s" marker-end="url(#ah-flow)" d="M60 156V174"/>
+              <path class="s" marker-end="url(#ah-flow)" d="M140 156V174"/>
+              <path class="s" marker-end="url(#ah-flow)" d="M220 156V174"/>
+              <path class="s" marker-end="url(#ah-flow)" d="M300 156V174"/>
+              <rect x="28" y="176" width="64" height="50" class="f-paper"/>
+              <rect x="108" y="176" width="64" height="50" class="f-paper"/>
+              <rect x="188" y="176" width="64" height="50" class="f-paper"/>
+              <rect x="268" y="176" width="64" height="50" class="f-paper"/>
+              <text x="60" y="199" text-anchor="middle" class="t-num">W1</text>
+              <text x="140" y="199" text-anchor="middle" class="t-num">W2</text>
+              <text x="220" y="199" text-anchor="middle" class="t-num">W3</text>
+              <text x="300" y="199" text-anchor="middle" class="t-num">W4</text>
+              <text x="60" y="216" text-anchor="middle" class="t-sm">query</text>
+              <text x="140" y="216" text-anchor="middle" class="t-sm">query</text>
+              <text x="220" y="216" text-anchor="middle" class="t-sm">query</text>
+              <text x="300" y="216" text-anchor="middle" class="t-sm">query</text>
+              <path class="s" d="M60 226V240M140 226V240M220 226V240M300 226V240M60 240H300"/>
+              <path class="s" marker-end="url(#ah-flow)" d="M180 240V258"/>
+              <rect x="95" y="260" width="170" height="48" class="f-ink"/>
+              <text x="180" y="280" text-anchor="middle" class="t-lab t-inv">PYTHON</text>
+              <text x="180" y="297" text-anchor="middle" class="t-sm t-inv">computes every number</text>
+              <text x="276" y="281" class="t-it t-g">never</text>
+              <text x="276" y="297" class="t-it t-g">the model</text>
+              <path class="s" marker-end="url(#ah-flow)" d="M180 308V332"/>
+              <rect x="20" y="334" width="320" height="122" class="f-paper"/>
+              <text x="34" y="354" class="t-lab">DASHBOARD</text>
+              <line class="s" x1="20" y1="364" x2="340" y2="364"/>
+              <rect x="34" y="376" width="144" height="68" class="s-hair"/>
+              <line class="s-hair" x1="42" y1="436" x2="170" y2="436"/>
+              <polyline class="s-g" points="42,428 58,420 74,424 90,410 106,414 122,400 138,404 154,392 170,386"/>
+              <rect x="188" y="376" width="138" height="36" class="s-hair"/>
+              <rect x="198" y="394" width="12" height="12" class="f-ink"/>
+              <rect x="219" y="386" width="12" height="20" class="f-ink"/>
+              <rect x="240" y="390" width="12" height="16" class="f-ink"/>
+              <rect x="261" y="382" width="12" height="24" class="f-ink"/>
+              <rect x="282" y="388" width="12" height="18" class="f-ink"/>
+              <rect x="303" y="380" width="12" height="26" class="f-g"/>
+              <rect x="188" y="418" width="138" height="26" class="s-hair"/>
+              <path class="s-hair" d="M196 427H266M298 427H318M196 436H252M294 436H318"/>
+              <line class="s-dot" x1="372" y1="24" x2="372" y2="446"/>
+              <line class="s" x1="366" y1="24" x2="378" y2="24"/>
+              <line class="s" x1="366" y1="446" x2="378" y2="446"/>
+              <text x="372" y="15" text-anchor="middle" class="t-sm">0 s</text>
+              <text x="372" y="463" text-anchor="middle" class="t-sm">~40 s</text>
+            </svg>
+            <ol class="legend">
+              <li><b>Plan</b>The planner model turns the question into a layout of widgets.</li>
+              <li><b>Fetch</b>One worker per widget queries the semantic layer, all in parallel.</li>
+              <li><b>Compute</b>Python computes every figure from the query results.</li>
+              <li><b>Render</b>Next.js and Recharts draw the page. LangSmith traces each step.</li>
+            </ol>
+          </div>
+          <figcaption id="fig3-cap">The planner never touches a number. Workers fetch data through the semantic layer, Python computes the figures, and the page is ready in about 40 seconds.</figcaption>
+        </figure>
+      </div>
+
+      <footer class="case-notes">
+        <p id="fn-2"><a class="fn-n" href="#fnref-2" aria-label="Back to text, footnote 2">2</a>Stack: Claude, LangChain, Cube, Next.js, Recharts, LangSmith.</p>
+      </footer>
+    </div>
+  </article>
+
+  <!-- ---------- 03 · GLOSA ---------- -->
+  <article class="case case--wide wrap" id="glosa" aria-labelledby="glosa-h">
+    <div class="g12 case-grid">
+      <div class="case-rail">
+        <span class="case-num" aria-hidden="true">03</span>
+        <p class="label"><b>Case study</b>p. 22</p>
+      </div>
+
+      <header class="case-head">
+        <p class="kicker">Core engineer · 2024 – now</p>
+        <h3 class="case-title" id="glosa-h">Glosa</h3>
+        <p class="standfirst">A semantic layer, as code. Business questions go in, and SQL for Postgres, Snowflake or Microsoft Fabric comes out.</p>
+      </header>
+
+      <aside class="margin-note" aria-label="Lineage">
+        <span class="label">Grew from</span>
+        <a class="ln" href="#a-08">Bubufy</a>, a small Python library over Spotify's API. It was my first API designed for other people.
+        <span class="see">Archive Nº 08, p. 41</span>
+      </aside>
+
+      <div class="pao">
+        <section>
+          <h4 class="label"><i>i.</i>Problem</h4>
+          <div class="body"><p>Every client defines its metrics, hierarchies and business rules a little differently. Engineers rewrote the same questions by hand for whichever database the client ran, and onboarding a new client took six weeks.</p></div>
+        </section>
+        <section>
+          <h4 class="label"><i>ii.</i>Approach</h4>
+          <div class="body"><p>A CLI and an API compile business questions into SQL for three engines. Each client's metrics, hierarchies and rules live in a versioned git repository, and an Explorer UI lets the team browse and test them.<sup class="fnref"><a id="fnref-3" href="#fn-3" aria-label="Footnote 3">3</a></sup></p></div>
+        </section>
+        <section>
+          <h4 class="label"><i>iii.</i>Outcome</h4>
+          <div class="body"><p class="end">Client onboarding dropped from 6 weeks to 4 days. The layer holds more than 180 metric definitions, and each one compiles for Postgres, Snowflake and Microsoft Fabric.</p></div>
+        </section>
+      </div>
+
+      <div class="feature">
+        <div class="pull">
+          <p class="label">Client onboarding</p>
+          <p class="pull-num"><span class="sr-only">From 6 weeks to 4 days</span><span aria-hidden="true"><span class="line">6<span class="u">weeks</span></span><span class="line"><span class="arr">&rarr;</span>4<span class="u">days</span></span></span></p>
+          <dl class="mini">
+            <div><dt>SQL engines</dt><dd>3</dd></div>
+            <div><dt>metrics defined</dt><dd>180+</dd></div>
+          </dl>
+        </div>
+
+        <figure class="fig gl" aria-labelledby="fig4-cap">
+          <div class="fig-head"><span class="fig-n">Fig. 4</span><span class="fig-title">One definition, three dialects</span></div>
+
+          <div class="gl-box gl-q">
+            <span class="label">Question</span>
+            <p>Net revenue by region, last three months, top five.</p>
+          </div>
+          <div class="gl-step" aria-hidden="true"><span>finds the metric</span></div>
+          <div class="gl-box gl-layer">
+            <span class="label">Semantic layer · versioned in git</span>
+<pre><code><span class="c"># metrics/net_revenue.yml</span>
+metric: net_revenue
+label: Net revenue
+sql: SUM(amount - refund)
+dimensions: [region, ts]
+owner: finance</code></pre>
+          </div>
+          <div class="gl-step gl-step--fan" aria-hidden="true"><span>compiles to SQL</span></div>
+          <div class="gl-engines">
+            <div class="gl-box gl-eng">
+              <span class="label">PostgreSQL</span>
+<pre><code>SELECT region,
+  SUM(amount - refund)
+    AS net_revenue
+FROM orders
+WHERE ts &gt;= <b>now()</b>
+  <b>- interval '3 months'</b>
+GROUP BY region
+ORDER BY net_revenue DESC
+<b>LIMIT 5</b>;</code></pre>
+            </div>
+            <div class="gl-box gl-eng">
+              <span class="label">Snowflake</span>
+<pre><code>SELECT region,
+  SUM(amount - refund)
+    AS net_revenue
+FROM orders
+WHERE ts &gt;= <b>DATEADD(</b>
+  <b>month, -3, CURRENT_DATE)</b>
+GROUP BY region
+ORDER BY net_revenue DESC
+<b>LIMIT 5</b>;</code></pre>
+            </div>
+            <div class="gl-box gl-eng">
+              <span class="label">Microsoft Fabric <span>T-SQL</span></span>
+<pre><code>SELECT <b>TOP 5</b> region,
+  SUM(amount - refund)
+    AS net_revenue
+FROM orders
+WHERE ts &gt;= <b>DATEADD(</b>
+  <b>month, -3, GETDATE())</b>
+GROUP BY region
+ORDER BY net_revenue DESC;</code></pre>
+            </div>
+          </div>
+          <figcaption id="fig4-cap">The metric is defined once, in git. Glosa compiles the same question for each engine, and the parts that differ by dialect are set in green.</figcaption>
+        </figure>
+      </div>
+
+      <footer class="case-notes">
+        <p id="fn-3"><a class="fn-n" href="#fnref-3" aria-label="Back to text, footnote 3">3</a>Stack: Python, FastAPI, SQLGlot, Typer, Next.js, Docker.</p>
+      </footer>
+    </div>
+  </article>
+</section>
+
+<!-- ================= PART II · ALSO IN THIS ISSUE ================= -->
+<section class="part wrap" id="also" aria-labelledby="also-h">
+  <div class="part-head">
+    <hr class="rule-tt">
+    <div class="g12">
+      <p class="part-no">Part II</p>
+      <h2 class="part-title" id="also-h">Also in this issue</h2>
+      <p class="part-dek">Three more production systems, in brief. Gemelos also runs the verification step inside Pulso. <span class="label folio">pp. 30–33</span></p>
+    </div>
+  </div>
+
+  <table class="idx" role="table">
+    <caption class="sr-only">Three more systems: name, summary, role, year and headline result</caption>
+    <thead role="rowgroup">
+      <tr role="row">
+        <th scope="col" role="columnheader" style="width:5%">Nº</th>
+        <th scope="col" role="columnheader" style="width:39%">Project</th>
+        <th scope="col" role="columnheader" style="width:16%">Role</th>
+        <th scope="col" role="columnheader" style="width:8%">Year</th>
+        <th scope="col" role="columnheader" style="width:32%">Result</th>
+      </tr>
+    </thead>
+    <tbody role="rowgroup">
+      <tr role="row" id="ruta">
+        <td role="cell" class="idx-n">04</td>
+        <td role="cell" class="idx-p">
+          <h3 class="idx-name">Ruta</h3>
+          <p class="idx-line">Route and shift planner for field promoters.</p>
+          <p class="idx-grew">Grew from <a class="ln" href="#a-02">DCI Hacedor de Horarios</a> and <a class="ln" href="#a-03">RRT Bidirectional Dijkstra</a></p>
+        </td>
+        <td role="cell" class="idx-role" data-label="Role">Full-stack developer</td>
+        <td role="cell" class="idx-year" data-label="Year">2023</td>
+        <td role="cell" class="idx-res"><span class="idx-big">18%</span><span class="idx-what">fewer km driven</span><span class="idx-more">2,300 visits planned a week. Planning time cut from 1 day to 3 min.</span></td>
+      </tr>
+      <tr role="row" id="gemelos">
+        <td role="cell" class="idx-n">05</td>
+        <td role="cell" class="idx-p">
+          <h3 class="idx-name">Gemelos</h3>
+          <p class="idx-line">Find the offices that look like yours.</p>
+          <p class="idx-grew">Grew from <a class="ln" href="#a-06">Color Picker</a></p>
+        </td>
+        <td role="cell" class="idx-role" data-label="Role">Data scientist</td>
+        <td role="cell" class="idx-year" data-label="Year">2024</td>
+        <td role="cell" class="idx-res"><span class="idx-big">27%</span><span class="idx-what">of "successful" plans re-labelled as borrowed market effect</span><span class="idx-more">Runs the verification step in Pulso.</span></td>
+      </tr>
+      <tr role="row" id="mensajero">
+        <td role="cell" class="idx-n">06</td>
+        <td role="cell" class="idx-p">
+          <h3 class="idx-name">Mensajero</h3>
+          <p class="idx-line">Proactive messaging that never double-sends.</p>
+          <p class="idx-grew">Grew from <a class="ln" href="#a-05">Spotwipy</a></p>
+        </td>
+        <td role="cell" class="idx-role" data-label="Role">Backend engineer</td>
+        <td role="cell" class="idx-year" data-label="Year">2024</td>
+        <td role="cell" class="idx-res"><span class="idx-big">0</span><span class="idx-what">duplicates since launch</span><span class="idx-more">60k messages a month, 99.95% delivered.</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================= PART III · ARCHIVE ================= -->
+<section class="part wrap" id="archive" aria-labelledby="archive-h">
+  <div class="part-head">
+    <hr class="rule-tt">
+    <div class="g12">
+      <p class="part-no">Part III</p>
+      <h2 class="part-title" id="archive-h">Archive · 2019–2022</h2>
+      <p class="part-dek">Student and side projects, all still online. Seven of the eight grew into a system in this issue. <span class="label folio">pp. 34–41</span></p>
+    </div>
+  </div>
+
+  <ol class="toc">
+    <li id="a-01">
+      <span class="toc-n">01</span>
+      <div>
+        <a class="toc-line" href="https://socorrobot.org/" target="_blank" rel="noreferrer"><span class="toc-title">Socorro Bot Page</span><span class="toc-dots" aria-hidden="true"></span><span class="toc-pg" aria-hidden="true">34<svg class="ico"><use href="#i-ne"/></svg></span><span class="sr-only"> (opens in a new tab)</span></a>
+        <p class="toc-desc">Information and support page for a WhatsApp bot that helps families through missing-person cases.</p>
+        <p class="toc-meta"><span>JavaScript · HTML · CSS</span><span class="toc-host">socorrobot.org</span><a class="toc-into" href="#pulso">Grew into Pulso</a></p>
+      </div>
+    </li>
+    <li id="a-02">
+      <span class="toc-n">02</span>
+      <div>
+        <a class="toc-line" href="https://bubudavid.github.io/dci-hh/" target="_blank" rel="noreferrer"><span class="toc-title">DCI · Hacedor de Horarios 🐝</span><span class="toc-dots" aria-hidden="true"></span><span class="toc-pg" aria-hidden="true">35<svg class="ico"><use href="#i-ne"/></svg></span><span class="sr-only"> (opens in a new tab)</span></a>
+        <p class="toc-desc">Full-stack app that generates every possible schedule combination from your subjects.</p>
+        <p class="toc-meta"><span>Python · FastAPI · ReactJS</span><span class="toc-host">bubudavid.github.io/dci-hh</span><a class="toc-into" href="#ruta">Grew into Ruta</a></p>
+      </div>
+    </li>
+    <li id="a-03">
+      <span class="toc-n">03</span>
+      <div>
+        <a class="toc-line" href="https://github.com/BubuDavid/RRT-Bidirectional-Dijstrak" target="_blank" rel="noreferrer"><span class="toc-title">RRT Bidirectional Dijkstra</span><span class="toc-dots" aria-hidden="true"></span><span class="toc-pg" aria-hidden="true">36<svg class="ico"><use href="#i-ne"/></svg></span><span class="sr-only"> (opens in a new tab)</span></a>
+        <p class="toc-desc">Bidirectional RRT to sample a map, then Dijkstra for the shortest path. Notebook.</p>
+        <p class="toc-meta"><span>Python · pandas · numpy</span><span class="toc-host">github.com/BubuDavid/RRT-Bidirectional-Dijstrak</span><a class="toc-into" href="#ruta">Grew into Ruta</a></p>
+      </div>
+    </li>
+    <li id="a-04">
+      <span class="toc-n">04</span>
+      <div>
+        <a class="toc-line" href="https://personality-analysis-spotify.glitch.me/" target="_blank" rel="noreferrer"><span class="toc-title">Spotify Analysis</span><span class="toc-dots" aria-hidden="true"></span><span class="toc-pg" aria-hidden="true">37<svg class="ico"><use href="#i-ne"/></svg></span><span class="sr-only"> (opens in a new tab)</span></a>
+        <p class="toc-desc">Insights into your top 50 songs over 2 weeks, 6 months and all time. Flask and the Spotify API, built on my own PyPI library, Bubufy.</p>
+        <p class="toc-meta"><span>Python · Flask · HTML · CSS</span><span class="toc-host">personality-analysis-spotify.glitch.me</span><a class="toc-into" href="#lienzo">Grew into Lienzo</a></p>
+      </div>
+    </li>
+    <li id="a-05">
+      <span class="toc-n">05</span>
+      <div>
+        <a class="toc-line" href="http://spotwipy-shuffle.glitch.me/" target="_blank" rel="noreferrer"><span class="toc-title">Spotwipy</span><span class="toc-dots" aria-hidden="true"></span><span class="toc-pg" aria-hidden="true">38<svg class="ico"><use href="#i-ne"/></svg></span><span class="sr-only"> (opens in a new tab)</span></a>
+        <p class="toc-desc">Connects Spotify and Twitter. It picks 5 random songs and a bot tweets them.</p>
+        <p class="toc-meta"><span>Flask · Python · JavaScript</span><span class="toc-host">spotwipy-shuffle.glitch.me</span><a class="toc-into" href="#mensajero">Grew into Mensajero</a></p>
+      </div>
+    </li>
+    <li id="a-06">
+      <span class="toc-n">06</span>
+      <div>
+        <a class="toc-line" href="https://palette-bubupicker.glitch.me/" target="_blank" rel="noreferrer"><span class="toc-title">Color Picker</span><span class="toc-dots" aria-hidden="true"></span><span class="toc-pg" aria-hidden="true">39<svg class="ico"><use href="#i-ne"/></svg></span><span class="sr-only"> (opens in a new tab)</span></a>
+        <p class="toc-desc">Finds the color palette of any public image with numpy, OpenCV and scikit-learn.</p>
+        <p class="toc-meta"><span>Python · numpy · scikit-learn</span><span class="toc-host">palette-bubupicker.glitch.me</span><a class="toc-into" href="#gemelos">Grew into Gemelos</a></p>
+      </div>
+    </li>
+    <li id="a-07">
+      <span class="toc-n">07</span>
+      <div>
+        <a class="toc-line" href="https://bubudavid.github.io/Resume/" target="_blank" rel="noreferrer"><span class="toc-title">Resume</span><span class="toc-dots" aria-hidden="true"></span><span class="toc-pg" aria-hidden="true">40<svg class="ico"><use href="#i-ne"/></svg></span><span class="sr-only"> (opens in a new tab)</span></a>
+        <p class="toc-desc">Responsive HTML, CSS and JS resume.</p>
+        <p class="toc-meta"><span>HTML · CSS · JavaScript</span><span class="toc-host">bubudavid.github.io/Resume</span></p>
+      </div>
+    </li>
+    <li id="a-08">
+      <span class="toc-n">08</span>
+      <div>
+        <a class="toc-line" href="https://github.com/BubuDavid/Bubufy" target="_blank" rel="noreferrer"><span class="toc-title">Bubufy</span><span class="toc-dots" aria-hidden="true"></span><span class="toc-pg" aria-hidden="true">41<svg class="ico"><use href="#i-ne"/></svg></span><span class="sr-only"> (opens in a new tab)</span></a>
+        <p class="toc-desc">Small Python API client for Spotify, published on PyPI.</p>
+        <p class="toc-meta"><span>Python</span><span class="toc-host">github.com/BubuDavid/Bubufy</span><a class="toc-into" href="#glosa">Grew into Glosa</a></p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- ================= BACK PAGE ================= -->
+<section class="back wrap" id="experience" aria-labelledby="exp-h">
+  <hr class="rule-tt">
+  <div class="g12 back-grid">
+    <div class="back-exp">
+      <p class="kicker">Back page <span class="folio">p. 42</span></p>
+      <h2 class="back-title" id="exp-h">Experience</h2>
+      <ol class="exp">
+        <li>
+          <p class="exp-years">2023 – now</p>
+          <h3>Ceiba Data</h3>
+          <p class="exp-role">AI Engineer <span>(Software Engineer until 2024)</span></p>
+          <p class="exp-what">Teams copilot, semantic layer platform, agentic dashboards.</p>
+        </li>
+        <li>
+          <p class="exp-years">2022 – 2023</p>
+          <h3>Freelance</h3>
+          <p class="exp-role">Full-stack developer</p>
+          <p class="exp-what">Web apps and bots for NGOs and small businesses, the Socorro Bot page among them.</p>
+        </li>
+        <li>
+          <p class="exp-years">2019 – 2022</p>
+          <h3>University (DCI)</h3>
+          <p class="exp-role">Student and side projects</p>
+          <p class="exp-what">Schedule generator used by classmates, Spotify tools, path-planning research.</p>
+        </li>
+      </ol>
+    </div>
+
+    <div class="back-tools">
+      <p class="kicker" aria-hidden="true">&nbsp;</p>
+      <h2 class="back-title">Toolkit</h2>
+      <dl class="tools">
+        <div><dt class="label">Languages</dt><dd>Python, TypeScript, JavaScript, SQL</dd></div>
+        <div><dt class="label">AI</dt><dd>LangGraph, LangChain, Claude, Azure OpenAI, LangSmith, evals</dd></div>
+        <div><dt class="label">Backend &amp; data</dt><dd>FastAPI, PostgreSQL, Cube, SQLGlot, DuckDB, pandas, scikit-learn, Redis</dd></div>
+        <div><dt class="label">Frontend</dt><dd>React, Next.js, Tailwind, Recharts</dd></div>
+        <div><dt class="label">Platforms</dt><dd>Microsoft Teams, Azure, Docker</dd></div>
+      </dl>
+    </div>
+
+    <div class="back-mail">
+      <p class="kicker" aria-hidden="true">&nbsp;</p>
+      <h2 class="back-title">Correspondence</h2>
+      <p class="standfirst">Open to interesting problems at the intersection of LLMs, data and product. Letters to the editor are welcome.</p>
+      <a class="mail-big ln" href="mailto:hola@bubudavid.me">hola@bubudavid.me</a>
+      <ul class="social">
+        <li><a href="https://github.com/BubuDavid" target="_blank" rel="noreferrer"><svg class="ico" aria-hidden="true"><use href="#i-gh"/></svg><span class="grow">GitHub</span><span class="label muted">BubuDavid</span><span class="sr-only"> (opens in a new tab)</span></a></li>
+        <li><a href="https://www.linkedin.com/in/davidpedrozasegoviano/" target="_blank" rel="noreferrer"><svg class="ico" aria-hidden="true"><use href="#i-in"/></svg><span class="grow">LinkedIn</span><span class="label muted">davidpedrozasegoviano</span><span class="sr-only"> (opens in a new tab)</span></a></li>
+        <li><a href="mailto:hola@bubudavid.me"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg><span class="grow">Email</span><span class="label muted">hola@bubudavid.me</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= COLOPHON ================= -->
+<footer class="colophon wrap" id="colophon" aria-labelledby="colo-h">
+  <hr class="rule-tt">
+  <div class="g12 colo-grid">
+    <div class="colo-main">
+      <h2 class="label" id="colo-h">Colophon <span class="folio">p. 44</span></h2>
+      <p>Headlines and numerals are set in <i>Fraunces</i> by Undercase Type, text in <i>Inter Tight</i> by Rasmus Andersson. The issue uses one ink, #17160F, and one accent, house green #1F5C3A, on paper #F3EFE6. I drew every figure in SVG and CSS, without frameworks. The cover photograph is the only image.</p>
+    </div>
+    <div class="colo-links">
+      <h2 class="label">Elsewhere</h2>
+      <ul>
+        <li><a class="ln" href="https://github.com/BubuDavid" target="_blank" rel="noreferrer">GitHub<svg class="ico" aria-hidden="true"><use href="#i-ne"/></svg><span class="sr-only"> (opens in a new tab)</span></a></li>
+        <li><a class="ln" href="https://www.linkedin.com/in/davidpedrozasegoviano/" target="_blank" rel="noreferrer">LinkedIn<svg class="ico" aria-hidden="true"><use href="#i-ne"/></svg><span class="sr-only"> (opens in a new tab)</span></a></li>
+        <li><a class="ln" href="mailto:hola@bubudavid.me">hola@bubudavid.me</a></li>
+      </ul>
+    </div>
+    <div class="colo-made">
+      <h2 class="label">Printed in</h2>
+      <p class="made"><code aria-hidden="true">&lt;&gt;</code>Made with 💖 in 🇲🇽🌮</p>
+    </div>
+  </div>
+  <div class="colo-foot">
+    <span class="label">Issue Nº 04 · Autumn 2026 · México</span>
+    <span class="label">© 2026 David "Bubu" Pedroza Segoviano 🦕</span>
+    <a class="label" href="#top">Back to the cover &uarr;</a>
+  </div>
+</footer>
+
+<div class="grid-overlay" aria-hidden="true">
+  <div class="wrap"><div class="g12"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  /* Column grid overlay: button in the pill, or press G. */
+  var btn = document.querySelector('[data-grid-toggle]');
+  function setGrid(on) {
+    root.classList.toggle('show-grid', on);
+    if (btn) btn.setAttribute('aria-pressed', String(on));
+  }
+  if (btn) btn.addEventListener('click', function () { setGrid(!root.classList.contains('show-grid')); });
+  document.addEventListener('keydown', function (e) {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    if (t && t.closest && t.closest('input, textarea, select, [contenteditable]')) return;
+    if (e.key === 'g' || e.key === 'G') setGrid(!root.classList.contains('show-grid'));
+    else if (e.key === 'Escape') setGrid(false);
+  });
+
+  /* Nameplate: size BUBU so the four letters fill their column exactly. */
+  var np = document.querySelector('.np');
+  if (!np) return;
+  var host = np.parentElement;
+  var lastWidth = 0;
+  function fit(force) {
+    var w = host.clientWidth;
+    if (!w || (!force && w === lastWidth)) return;
+    lastWidth = w;
+    np.style.fontSize = '';
+    var sum = 0;
+    for (var i = 0; i < np.children.length; i++) sum += np.children[i].getBoundingClientRect().width;
+    if (!sum) return;
+    var fs = parseFloat(getComputedStyle(np).fontSize);
+    np.style.fontSize = (fs * (w * 0.975) / sum).toFixed(2) + 'px';
+  }
+  function refit() { fit(true); }
+  fit(true);
+  if (document.fonts) {
+    if (document.fonts.load) document.fonts.load('560 100px "Fraunces"').then(refit, function () {});
+    if (document.fonts.ready) document.fonts.ready.then(refit);
+    if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', refit);
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(function () { fit(false); }).observe(host);
+  else window.addEventListener('resize', function () { fit(false); });
+})();
+</script>
+</body>
+</html>
