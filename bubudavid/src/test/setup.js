@@ -32,5 +32,5 @@ afterEach(() => {
   vi.useRealTimers();
   vi.restoreAllMocks();
   clearObservers();
-  scrollIntoView.mockClear();
+  scrollIntoView.mockReset(); // calls and any implementation a test gave it
 });

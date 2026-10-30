@@ -17,14 +17,23 @@ export function flash(el) {
   flashTimers.set(el, setTimeout(() => el.classList.remove('is-flash'), FLASH_MS));
 }
 
+/* 'auto' follows html { scroll-behavior: smooth }, so an instant scroll turns smooth scrolling off for the call. */
+function scrollToTarget(el, instant) {
+  const root = document.documentElement;
+  const before = root.style.scrollBehavior;
+  if (instant) root.style.scrollBehavior = 'auto';
+  try {
+    el.scrollIntoView({ behavior: instant ? 'auto' : 'smooth', block: el.matches(CENTRED) ? 'center' : 'start' });
+  } finally {
+    if (instant) root.style.scrollBehavior = before;
+  }
+}
+
 /* Scroll to a station's section, flash it and move focus to its heading. False if it is not on the page. */
 export function jumpTo(stationId, { instant = false } = {}) {
   const el = document.getElementById(targetId(stationId));
   if (!el) return false;
-  el.scrollIntoView({
-    behavior: instant || prefersReducedMotion() ? 'auto' : 'smooth',
-    block: el.matches(CENTRED) ? 'center' : 'start',
-  });
+  scrollToTarget(el, instant || prefersReducedMotion());
   flash(el);
   const heading = el.querySelector(HEADING);
   if (heading) {
@@ -47,13 +56,36 @@ export function useJumpLinks() {
   }, []);
 }
 
-/* The page is drawn in the browser, so the anchor of a shared link does not exist when the browser looks for it. */
+const READER_MOVES = ['wheel', 'touchstart', 'keydown', 'pointerdown'];
+
+/* The page is drawn in the browser, so the anchor of a shared link does not exist when the browser looks for it.
+   The web fonts arrive after that first jump and change the height of everything above the target, so the page
+   lands on it once more when they are in, unless the reader has started moving. */
 export function useInitialHash() {
   useEffect(() => {
     const id = location.hash.slice(1);
-    if (!id) return;
+    if (!id) return undefined;
     const station = stationForTarget(id);
+    const el = document.getElementById(station ? targetId(station) : id);
+    if (!el) return undefined;
     if (station) jumpTo(station, { instant: true });
-    else document.getElementById(id)?.scrollIntoView({ block: 'start' });
+    else scrollToTarget(el, true);
+
+    let waiting = true;
+    let frame = 0;
+    const stop = () => {
+      waiting = false;
+      cancelAnimationFrame(frame);
+      READER_MOVES.forEach(type => window.removeEventListener(type, stop));
+    };
+    READER_MOVES.forEach(type => window.addEventListener(type, stop, { passive: true }));
+    document.fonts?.ready?.then(() => {
+      if (!waiting) return;
+      frame = requestAnimationFrame(() => {
+        stop();
+        scrollToTarget(el, true);
+      });
+    });
+    return stop;
   }, []);
 }

@@ -1,7 +1,7 @@
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { jumpTo, useInitialHash, useJumpLinks } from './jump';
-import { scrollIntoView, setMedia } from '../test/browser';
+import { lateFonts, scrollIntoView, setMedia } from '../test/browser';
 
 const PAGE = `
   <article id="lienzo" class="case"><header class="case-head"><h3 class="case-title">Lienzo</h3></header></article>
@@ -12,9 +12,26 @@ const PAGE = `
 function Links() { useJumpLinks(); return <div dangerouslySetInnerHTML={{ __html: PAGE }} />; }
 function Hash() { useInitialHash(); return <div dangerouslySetInnerHTML={{ __html: PAGE }} />; }
 
+/* Holds back animation frames until `flush` runs them; cancelled ones never run. */
+function heldFrames() {
+  const queue = new Map();
+  let last = 0;
+  vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+    queue.set(++last, callback);
+    return last;
+  });
+  vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(id => queue.delete(id));
+  return () => {
+    const callbacks = [...queue.values()];
+    queue.clear();
+    callbacks.forEach(callback => callback(performance.now()));
+  };
+}
+
 afterEach(() => {
   history.replaceState(null, '', '/');
   document.body.innerHTML = '';
+  document.documentElement.style.scrollBehavior = '';
 });
 
 test('jumpTo scrolls to a case, flashes it and focuses its title', () => {
@@ -70,6 +87,75 @@ test('a shared link to a station scrolls there on load', () => {
   render(<Hash />);
   expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto', block: 'start' });
   expect(scrollIntoView.mock.contexts[0]).toBe(document.getElementById('lienzo'));
+});
+
+test('an instant jump turns smooth scrolling off for the call, then puts it back', () => {
+  document.body.innerHTML = PAGE;
+  const root = document.documentElement;
+  const during = [];
+  scrollIntoView.mockImplementation(() => during.push(root.style.scrollBehavior));
+  jumpTo('lienzo', { instant: true });
+  expect(root.style.scrollBehavior).toBe('');
+  root.style.scrollBehavior = 'smooth';
+  jumpTo('spotify', { instant: true });
+  expect(root.style.scrollBehavior).toBe('smooth');
+  jumpTo('lienzo');
+  expect(during).toEqual(['auto', 'auto', 'smooth']);
+});
+
+test('a shared link to a station lands again when the web fonts arrive, without a second flash or focus', async () => {
+  history.replaceState(null, '', '/#lienzo');
+  const fonts = lateFonts();
+  const flush = heldFrames();
+  try {
+    render(<Hash />);
+    const el = document.getElementById('lienzo');
+    const title = el.querySelector('.case-title');
+    expect(document.activeElement).toBe(title);
+    const focus = vi.spyOn(title, 'focus');
+    const flashAgain = vi.spyOn(el.classList, 'add');
+    await act(async () => fonts.finish());
+    flush();
+    expect(scrollIntoView).toHaveBeenCalledTimes(2);
+    expect(scrollIntoView.mock.contexts[1]).toBe(el);
+    expect(scrollIntoView).toHaveBeenLastCalledWith({ behavior: 'auto', block: 'start' });
+    expect(focus).not.toHaveBeenCalled();
+    expect(flashAgain).not.toHaveBeenCalled();
+  } finally {
+    fonts.restore();
+  }
+});
+
+test('a reader who scrolls before the web fonts arrive is not moved again', async () => {
+  history.replaceState(null, '', '/#lienzo');
+  const fonts = lateFonts();
+  const flush = heldFrames();
+  try {
+    render(<Hash />);
+    fireEvent.wheel(window);
+    await act(async () => fonts.finish());
+    flush();
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+  } finally {
+    fonts.restore();
+  }
+});
+
+test('a page that is gone before the second landing does not scroll', async () => {
+  history.replaceState(null, '', '/#lienzo');
+  const fonts = lateFonts();
+  const flush = heldFrames();
+  const removed = vi.spyOn(window, 'removeEventListener');
+  try {
+    const { unmount } = render(<Hash />);
+    await act(async () => fonts.finish());
+    unmount();
+    flush();
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+    expect(removed.mock.calls.map(([type]) => type)).toEqual(expect.arrayContaining(['wheel', 'touchstart', 'keydown', 'pointerdown']));
+  } finally {
+    fonts.restore();
+  }
 });
 
 test('a shared link to a plain section scrolls there on load', () => {

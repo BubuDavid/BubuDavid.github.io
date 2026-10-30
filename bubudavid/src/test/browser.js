@@ -1,5 +1,5 @@
 // Doubles for the browser APIs jsdom lacks, and the controls tests use to drive them.
-// Tests import `setMedia`, `intersect`, `resizeObserved` and `scrollIntoView`.
+// Tests import `setMedia`, `intersect`, `resizeObserved`, `scrollIntoView` and `lateFonts`.
 // setup.js installs the rest (`matchMedia`, the two observer classes) and clears the registries.
 import { act } from '@testing-library/react';
 import { vi } from 'vitest';
@@ -131,4 +131,12 @@ export function resizeObserved(target) {
       .filter((observer) => observer.targets.has(target))
       .forEach((observer) => observer.callback([entry], observer));
   });
+}
+
+/* Swaps document.fonts.ready for a promise the test settles; `restore` puts the setup's back. */
+export function lateFonts() {
+  const original = document.fonts.ready;
+  let finish;
+  document.fonts.ready = new Promise((resolve) => { finish = () => resolve(document.fonts); });
+  return { finish: () => finish(), restore: () => { document.fonts.ready = original; } };
 }

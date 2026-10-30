@@ -4,17 +4,9 @@ import { StrictMode } from 'react';
 import { expect, test, vi } from 'vitest';
 import NetworkMap from './NetworkMap';
 import { VORDER } from '../../content/map-layout';
-import { intersect, resizeObserved, scrollIntoView, setMedia } from '../../test/browser';
+import { intersect, lateFonts, resizeObserved, scrollIntoView, setMedia } from '../../test/browser';
 
 const card = () => document.getElementById('map-card');
-
-/* Swaps document.fonts.ready for a promise the test settles; `restore` puts the setup's back. */
-function lateFonts() {
-  const original = document.fonts.ready;
-  let finish;
-  document.fonts.ready = new Promise((resolve) => { finish = () => resolve(document.fonts); });
-  return { finish: () => finish(), restore: () => { document.fonts.ready = original; } };
-}
 
 /* Holds back every animation frame, so a test hands the train the timestamps it wants. */
 function frames() {
