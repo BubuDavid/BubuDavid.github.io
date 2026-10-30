@@ -1,0 +1,12 @@
+/* ---------------- Sticky nav ---------------- */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(243,239,230,.95);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid var(--ink);transform:translateY(-110%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s}
+.topnav.is-on{transform:none;visibility:visible;transition:transform .25s ease,visibility 0s}
+.topnav::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:3px;background:linear-gradient(to right,var(--l1) 0 25%,var(--l2) 25% 50%,var(--l3) 50% 75%,var(--l4) 75%)}
+.topnav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:52px}
+.topnav-brand{font-family:var(--serif);font-weight:560;font-size:1.5rem;line-height:1;letter-spacing:.02em;text-decoration:none;font-variation-settings:"opsz" 144}
+.topnav-brand span{font-size:.7em;margin-left:.3em}
+.topnav ul{display:flex;gap:clamp(12px,2vw,26px);overflow-x:auto;scrollbar-width:none}
+.topnav ul::-webkit-scrollbar{display:none}
+.topnav ul a{font:700 15px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;white-space:nowrap;padding:6px 0;border-bottom:2px solid transparent}
+.topnav ul a:hover,.topnav ul a.is-here{border-bottom-color:var(--ink)}
+@media (max-width:520px){.topnav ul li.opt{display:none}}
